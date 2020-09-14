@@ -34,16 +34,18 @@ SOFTWARE.
     <link rel="stylesheet" href="css/vendor.bundle.base.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/model.css">
+    <link rel="stylesheet" href="css/mobile.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link rel="shortcut icon" href="img/favicon.ico" />
+    <link data-n-head="ssr" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;700;900&display=swap">
+    <link rel="shortcut icon" href="https://vybe.finance/favicon.ico" />
 </head>
 
 <body onload="refreshStats()">
     <div class="container-scroller">
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo" href="https://vybe.finance"><img src="img/vybe-dark.svg" alt="Vybe logo" style="height:50%; width: 35px; margin-left: 10px; margin-right:10px;">Vybe</a>
-                <a class="navbar-brand brand-logo-mini" href="https://vybe.finance"><img src="img/vybe-dark.svg" alt="Vybe logo" style="height:50%; width: 35px; margin-left: 10px; margin-right:10px;">Vybe</a>
+                <a class="navbar-brand brand-logo" href="https://vybe.finance"><img src="https://vybe.finance/_nuxt/img/logo.c28bfa9.svg" alt="Vybe logo" style="height:50%; width: 75px; margin-left: 2.5rem;"></a>
+                <a class="navbar-brand brand-logo-mini" href="https://vybe.finance"><img src="https://vybe.finance/_nuxt/img/logo.c28bfa9.svg" alt="Vybe logo" style="height:50%; width: 75px; margin-left: 2.5rem;"></a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-stretch">
                 <ul class="navbar-nav navbar-nav-right">
@@ -67,6 +69,7 @@ SOFTWARE.
                                     <h2 id="user-balance-vybe" class="mb-5"></h2>
                                     <h6 id="user-balance-usd" class="card-text"></h6>
                                     <h6 id="user-balance-eth" class="card-text"></h6>
+                                    <button type="button" class="btn btn-gradient-light btn-rounded btn-fw btn-mobile" onclick="openStakeModal(true)">Stake</button>
                                 </div>
                             </div>
                         </div>
@@ -78,6 +81,7 @@ SOFTWARE.
                                     <h2 id="stake-balance-vybe" class="mb-5"></h2>
                                     <h6 id="stake-balance-usd" class="card-text"></h6>
                                     <h6 id="stake-balance-eth" class="card-text"></h6>
+                                    <button type="button" class="btn btn-gradient-light btn-rounded btn-fw btn-mobile" onclick="openStakeModal(false)">Withdraw</button>
                                 </div>
                             </div>
                         </div>
@@ -89,22 +93,23 @@ SOFTWARE.
                                     <h2 id="vybe-rewards-balance" class="mb-5"></h2>
                                     <h6 id="vybe-rewards-balance-usd" class="card-text"></h6>
                                     <h6 id="vybe-rewards-balance-eth" class="card-text"></h6>
+                                    <button type="button" class="btn btn-gradient-light btn-rounded btn-fw btn-mobile" onclick="claimRewards()">Claim</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-4 grid-margin stretch-card">
+                        <div class="col-md-4 grid-margin stretch-card action-card">
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title">Deposit Vybe Stake</h4>
-                                    <button type="button" class="btn btn-gradient-primary btn-rounded btn-fw" onclick="openStakeModal(true)">Stake</button>
+                                    <button type="button" class="btn btn-gradient-danger btn-rounded btn-fw" onclick="openStakeModal(true)">Stake</button>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-4 grid-margin stretch-card">
+                        <div class="col-md-4 grid-margin stretch-card action-card">
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title">Withdraw Vybe Stake</h4>
@@ -113,7 +118,7 @@ SOFTWARE.
                             </div>
                         </div>
 
-                        <div class="col-md-4 grid-margin stretch-card">
+                        <div class="col-md-4 grid-margin stretch-card action-card">
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title">Claim Vybe Rewards</h4>
