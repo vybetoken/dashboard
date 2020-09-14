@@ -50,7 +50,7 @@
 /*-------------------------------------------------------------------*/
 /* === SCSS Compass Functions === */
 
-@import url("https://fonts.googleapis.com/css2?family=Jura:wght@600;700&family=Roboto:wght@300;400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Jura:wght@600;700&family=Mulish:wght@300;400;500&display=swap");
 
 @-webkit-keyframes flash {
   0% {
@@ -1775,7 +1775,7 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
-  --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Mulish, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
 
 *,
@@ -1795,7 +1795,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Mulish, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -2044,7 +2044,7 @@ template {
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
   margin-bottom: 0.5rem;
-  font-weight: 500;
+  font-weight: 700;
   line-height: 1.2; }
 
 h1, .h1 {
@@ -3913,7 +3913,7 @@ textarea.form-control {
 .btn {
   display: inline-block;
   font-weight: 400;
-  color: #343a40;
+  color: #fff;
   text-align: center;
   vertical-align: middle;
   -webkit-user-select: none;
@@ -3935,7 +3935,7 @@ textarea.form-control {
       -webkit-transition: none;
       transition: none; } }
   .btn:hover {
-    color: #343a40;
+    color: #fff;
     text-decoration: none; }
   .btn:focus, .btn.focus {
     outline: 0;
@@ -6781,7 +6781,7 @@ a.close.disabled {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Mulish, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -6866,7 +6866,7 @@ a.close.disabled {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Mulish, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -10321,14 +10321,14 @@ input:focus {
 /* Typography */
 body {
   font-size: 1rem;
-  font-family: "Roboto", sans-serif;
+  font-family: Mulish, sans-serif;
   font-weight: initial;
   line-height: normal;
   -webkit-font-smoothing: antialiased; }
 
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: "Roboto", sans-serif; }
+  font-family: Mulish, sans-serif; }
 
 p {
   font-size: 0.875rem; }
@@ -10469,7 +10469,7 @@ pre {
 code {
   padding: 5px;
   color: #fe7c96;
-  font-family: "Roboto", sans-serif;
+  font-family: Mulish, sans-serif;
   font-size: 0.875rem;
   border-radius: 4px; }
 
@@ -10505,7 +10505,7 @@ code {
   -webkit-transition: all 0.25s ease;
   -ms-transition: all 0.25s ease;
   font-size: calc(0.875rem - 0.05rem);
-  font-family: "Roboto", sans-serif; }
+  font-family: Mulish, sans-serif; }
   .footer a {
     color: #1bcfb4;
     font-size: inherit; }
@@ -10565,6 +10565,10 @@ code {
     width: 100%;
     min-width: 100%; }
 
+.action-card {
+  text-align: center;
+}
+
 @media (min-width: 576px) {
   .border-right-sm {
     border-right: 1px solid #ebedf2; } }
@@ -10604,17 +10608,17 @@ code {
   flex-grow: 1; }
 
 .font-weight-light {
-  font-family: "Roboto", sans-serif;
+  font-family: Mulish, sans-serif;
   font-weight: 300;
 }
 
 .font-weight-bold {
-  font-family: "Roboto", sans-serif;
+  font-family: Mulish, sans-serif;
   font-weight: 600;
 }
 
 .font-weight-normal {
-  font-family: "Roboto", sans-serif;
+  font-family: Mulish, sans-serif;
   font-weight: 400;
 }
 
@@ -10702,21 +10706,21 @@ code {
   background: -webkit-gradient(linear, left top, right top, from(#e7ebf0), to(#868e96)) !important;
   background: linear-gradient(to right, #e7ebf0, #868e96) !important; }
 
-.bg-gradient-success {
-  background: -webkit-gradient(linear, left top, right top, from(#84d9d2), to(#07cdae)) !important;
-  background: linear-gradient(to right, #84d9d2, #07cdae) !important; }
+.card.bg-gradient-success {
+  background: #443db5;
+}
 
-.bg-gradient-info {
-  background: -webkit-gradient(linear, left top, right top, from(#90caf9), color-stop(99%, #047edf)) !important;
-  background: linear-gradient(to right, #90caf9, #047edf 99%) !important; }
+.card.bg-gradient-info {
+  background: #c168d4;
+ }
 
 .bg-gradient-warning {
   background: -webkit-gradient(linear, left top, right top, from(#f6e384), to(#ffd500)) !important;
   background: linear-gradient(to right, #f6e384, #ffd500) !important; }
 
-.bg-gradient-danger {
-  background: -webkit-gradient(linear, left top, right top, from(#ffbf96), to(#fe7096)) !important;
-  background: linear-gradient(to right, #ffbf96, #fe7096) !important; }
+.card.bg-gradient-danger {
+  background: #9f9bdb;
+}
 
 .bg-gradient-light {
   background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#e4e4e9)) !important;
@@ -10877,7 +10881,7 @@ code {
     width: 40%; }
     .card-revenue-table .revenue-item .revenue-amount p {
       font-size: 1.25rem;
-      font-family: "roboto", sans-serif;
+      font-family: Mulish, sans-serif;
       font-weight: 600;
       text-align: right; }
       .rtl .card-revenue-table .revenue-item .revenue-amount p {
@@ -10889,7 +10893,7 @@ code {
   color: #ffffff; }
   .card-revenue .highlight-text {
     font-size: 1.875rem;
-    font-family: "roboto", sans-serif;
+    font-family: Mulish, sans-serif;
     font-weight: 500; }
   .card-revenue .badge {
     background-color: rgba(255, 255, 255, 0.2);
@@ -11020,7 +11024,7 @@ code {
   font-weight: initial;
   line-height: 1;
   padding: .375rem .5625rem;
-  font-family: "Roboto", sans-serif; }
+  font-family: Mulish, sans-serif; }
   .badge.badge-pill {
     border-radius: 10rem; }
 
@@ -11149,14 +11153,17 @@ code {
 .btn {
   font-size: 0.875rem;
   line-height: 1;
-  font-family: "Roboto", sans-serif;
+  font-family: Mulish, sans-serif;
   font-weight: 600;
   /* Buttons with only icons */
   /* Buttons with icon and text */ }
   .btn i {
     font-size: 1rem; }
+  .btn-mobile {
+    display: none;
+  }
   .btn.btn-rounded {
-    border-radius: 50px; }
+    border-radius: .375rem; }
   .btn.btn-fw {
     min-width: 150px; }
   .btn.btn-sm, .btn-group-sm > .btn {
@@ -11685,21 +11692,10 @@ code {
 
 /* gradient buttons */
 .btn-gradient-primary {
-  background: -webkit-gradient(linear, left top, right top, from(#da8cff), to(#9a55ff));
-  background: linear-gradient(to right, #da8cff, #9a55ff);
+  background: #c168d4;
   border: 0;
   -webkit-transition: opacity 0.3s ease;
   transition: opacity 0.3s ease; }
-  .btn-gradient-primary:not([disabled]):not(.disabled):active, .btn-gradient-primary:not([disabled]):not(.disabled).active,
-  .show > .btn-gradient-primary.dropdown-toggle {
-    background: -webkit-gradient(linear, left top, right top, from(#da8cff), to(#9a55ff));
-    background: linear-gradient(to right, #da8cff, #9a55ff); }
-  .btn-gradient-primary:hover {
-    opacity: .8; }
-  .btn-gradient-primary:not(.btn-gradient-light) {
-    color: #ffffff; }
-    .btn-gradient-primary:not(.btn-gradient-light):hover, .btn-gradient-primary:not(.btn-gradient-light):focus, .btn-gradient-primary:not(.btn-gradient-light):active {
-      color: #ffffff; }
 
 .btn-gradient-secondary {
   background: -webkit-gradient(linear, left top, right top, from(#e7ebf0), to(#868e96));
@@ -11719,21 +11715,10 @@ code {
       color: #ffffff; }
 
 .btn-gradient-success {
-  background: -webkit-gradient(linear, left top, right top, from(#84d9d2), to(#07cdae));
-  background: linear-gradient(to right, #84d9d2, #07cdae);
+  background: #443db5;
   border: 0;
   -webkit-transition: opacity 0.3s ease;
   transition: opacity 0.3s ease; }
-  .btn-gradient-success:not([disabled]):not(.disabled):active, .btn-gradient-success:not([disabled]):not(.disabled).active,
-  .show > .btn-gradient-success.dropdown-toggle {
-    background: -webkit-gradient(linear, left top, right top, from(#84d9d2), to(#07cdae));
-    background: linear-gradient(to right, #84d9d2, #07cdae); }
-  .btn-gradient-success:hover {
-    opacity: .8; }
-  .btn-gradient-success:not(.btn-gradient-light) {
-    color: #ffffff; }
-    .btn-gradient-success:not(.btn-gradient-light):hover, .btn-gradient-success:not(.btn-gradient-light):focus, .btn-gradient-success:not(.btn-gradient-light):active {
-      color: #ffffff; }
 
 .btn-gradient-info {
   background: -webkit-gradient(linear, left top, right top, from(#90caf9), color-stop(99%, #047edf));
@@ -11770,38 +11755,21 @@ code {
       color: #ffffff; }
 
 .btn-gradient-danger {
-  background: -webkit-gradient(linear, left top, right top, from(#ffbf96), to(#fe7096));
-  background: linear-gradient(to right, #ffbf96, #fe7096);
+  background: #9f9bdb;
   border: 0;
   -webkit-transition: opacity 0.3s ease;
   transition: opacity 0.3s ease; }
-  .btn-gradient-danger:not([disabled]):not(.disabled):active, .btn-gradient-danger:not([disabled]):not(.disabled).active,
-  .show > .btn-gradient-danger.dropdown-toggle {
-    background: -webkit-gradient(linear, left top, right top, from(#ffbf96), to(#fe7096));
-    background: linear-gradient(to right, #ffbf96, #fe7096); }
-  .btn-gradient-danger:hover {
-    opacity: .8; }
-  .btn-gradient-danger:not(.btn-gradient-light) {
-    color: #ffffff; }
-    .btn-gradient-danger:not(.btn-gradient-light):hover, .btn-gradient-danger:not(.btn-gradient-light):focus, .btn-gradient-danger:not(.btn-gradient-light):active {
-      color: #ffffff; }
 
 .btn-gradient-light {
-  background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#e4e4e9));
-  background: linear-gradient(to bottom, #f4f4f4, #e4e4e9);
-  border: 0;
+  background: #fff;
   -webkit-transition: opacity 0.3s ease;
-  transition: opacity 0.3s ease; }
-  .btn-gradient-light:not([disabled]):not(.disabled):active, .btn-gradient-light:not([disabled]):not(.disabled).active,
-  .show > .btn-gradient-light.dropdown-toggle {
-    background: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#e4e4e9));
-    background: linear-gradient(to bottom, #f4f4f4, #e4e4e9); }
-  .btn-gradient-light:hover {
-    opacity: .8; }
-  .btn-gradient-light:not(.btn-gradient-light) {
-    color: #ffffff; }
-    .btn-gradient-light:not(.btn-gradient-light):hover, .btn-gradient-light:not(.btn-gradient-light):focus, .btn-gradient-light:not(.btn-gradient-light):active {
-      color: #ffffff; }
+  transition: opacity 0.3s ease; 
+  color: #000;
+}
+
+.btn-gradient-light:hover {
+  color: #000;
+}
 
 .btn-gradient-dark {
   background: linear-gradient(89deg, #5e7188, #3e4b5b);
@@ -12076,16 +12044,16 @@ code {
     color: #343a40;
     margin-bottom: 0.75rem;
     text-transform: capitalize;
-    font-family: "Roboto", sans-serif;
+    font-family: Mulish, sans-serif;
     font-size: 1.125rem; }
   .card .card-subtitle {
-    font-family: "Roboto", sans-serif;
+    font-family: Mulish, sans-serif;
     margin-top: 0.625rem;
     margin-bottom: 0.625rem; }
   .card .card-description {
     color: #76838f;
     margin-bottom: 1.5rem;
-    font-family: "Roboto", sans-serif; }
+    font-family: Mulish, sans-serif; }
   .card.card-outline-success {
     border: 1px solid #1bcfb4; }
   .card.card-outline-primary {
@@ -12414,7 +12382,7 @@ code {
 
 .form-control {
   border: 1px solid #ebedf2;
-  font-family: "Roboto", sans-serif;
+  font-family: Mulish, sans-serif;
   font-size: 0.8125rem; }
   .form-control:focus {
     background-color: #ffffff;
@@ -12491,7 +12459,7 @@ select.form-control {
     -ms-flex-align: center;
     align-items: center;
     padding: 15px 15px;
-    font-family: "Roboto", sans-serif;
+    font-family: Mulish, sans-serif;
     font-size: 0.875rem; }
     .icons-list > div i {
       display: inline-block;
@@ -12729,7 +12697,7 @@ dl {
   .table thead th {
     border-top: 0;
     border-bottom-width: 1px;
-    font-family: "Roboto", sans-serif;
+    font-family: Mulish, sans-serif;
     font-weight: initial; }
     .table thead th i {
       margin-left: 0.325rem; }
@@ -12837,7 +12805,7 @@ dl {
 
 /* Navbar */
 .navbar {
-  font-family: "Roboto", sans-serif;
+  font-family: Mulish, sans-serif;
   background: #fff;
   transition: background 0.25s ease;
   -webkit-transition: background 0.25s ease;
@@ -12851,7 +12819,6 @@ dl {
     -moz-transition: width 0.25s ease, background 0.25s ease;
     -ms-transition: width 0.25s ease, background 0.25s ease;
     background: #fff;
-    width: 260px;
     height: 70px; }
     @media (max-width: 991px) {
       .navbar .navbar-brand-wrapper {
@@ -12916,19 +12883,19 @@ dl {
       .navbar .navbar-menu-wrapper .search-field .input-group input:-ms-input-placeholder {
         font-size: 0.875rem;
         color: #9c9fa6;
-        font-family: "Roboto", sans-serif; }
+        font-family: Mulish, sans-serif; }
       .navbar .navbar-menu-wrapper .search-field .input-group input:-moz-placeholder {
         font-size: 0.875rem;
         color: #9c9fa6;
-        font-family: "Roboto", sans-serif; }
+        font-family: Mulish, sans-serif; }
       .navbar .navbar-menu-wrapper .search-field .input-group input::-moz-placeholder {
         font-size: 0.875rem;
         color: #9c9fa6;
-        font-family: "Roboto", sans-serif; }
+        font-family: Mulish, sans-serif; }
       .navbar .navbar-menu-wrapper .search-field .input-group input::-webkit-input-placeholder {
         font-size: 0.875rem;
         color: #9c9fa6;
-        font-family: "Roboto", sans-serif; }
+        font-family: Mulish, sans-serif; }
     .navbar .navbar-menu-wrapper .search-field .input-group i {
       font-size: 17px;
       margin-right: 0;
