@@ -233,8 +233,8 @@ async function getVYBEPriceETH() {
 // USER BALANCE
 async function displayVybeBalance() {
 	let vybeBalance = await getVYBEBalance();
-	vybeBalance = await formatValue(vybeBalance);
-	document.getElementById("user-balance-vybe").innerHTML = vybeBalance;
+	$('#user-balance-vybe').text(formatValue(vybeBalance));
+	// document.getElementById("user-balance-vybe").innerHTML = vybeBalance;
 }
 
 async function displayVybeUSDValue() {
