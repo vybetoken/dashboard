@@ -239,20 +239,20 @@ async function displayVybeBalance() {
 
 async function displayVybeUSDValue() {
 	const vybeBalance = await getVYBEBalance();
-	const usdBalance = await formatUSD(vybeBalance * vybeUSD);
+	const usdBalance = formatUSD(vybeBalance * vybeUSD);
 	document.getElementById("user-balance-usd").innerHTML = `${ usdBalance } USD`;
 }
 
 async function displayVybeETHValue() {
 	const vybeBalance = await getVYBEBalance();
-	const ethBalance = await formatValue(vybeBalance * vybeETH);
+	const ethBalance = formatValue(vybeBalance * vybeETH);
 	document.getElementById("user-balance-eth").innerHTML = `${ ethBalance } ETH`;
 }
 
 // STAKED BALANCE
 async function displayVybeStakeBalance() {
 	let vybeStakeBalance = await getStakedVYBE();
-	vybeStakeBalance = await formatValue(vybeStakeBalance);
+	vybeStakeBalance = formatValue(vybeStakeBalance);
 	document.getElementById("stake-balance-vybe").innerHTML = vybeStakeBalance;
 }
 
@@ -264,14 +264,14 @@ async function displayStakedUSDValue() {
 
 async function displayStakedETHValue() {
 	const vybeStakeBalance = await getStakedVYBE();
-	const ethBalance = await formatValue(vybeStakeBalance * vybeETH);
+	const ethBalance = formatValue(vybeStakeBalance * vybeETH);
 	document.getElementById("stake-balance-eth").innerHTML = `${ ethBalance } ETH`;
 }
 
 // USER REWARDS BALANCE
 async function displayVybeRewardsBalance() {
 	let vybeRewardsBalance = await getCurrentRewardsAmount();
-	vybeRewardsBalance = await formatValue(vybeRewardsBalance);
+	vybeRewardsBalance = formatValue(vybeRewardsBalance);
 	document.getElementById("vybe-rewards-balance").innerHTML = vybeRewardsBalance;
 }
 
@@ -283,19 +283,19 @@ async function displayVybeRewardsUSDBalance() {
 
 async function displayVybeRewardsETHBalance() {
 	let vybeRewardsBalance = await getCurrentRewardsAmount();
-	vybeRewardsBalance = await formatValue(vybeRewardsBalance * vybeETH);
+	vybeRewardsBalance = formatValue(vybeRewardsBalance * vybeETH);
 	document.getElementById("vybe-rewards-balance-eth").innerHTML = `${ vybeRewardsBalance } ETH`;
 }
 
 // NETWORK STATS
 async function displayVybeNetworkStake() {
 	let vybeStakeBalance = await getTotalStakedVYBE();
-	vybeStakeBalance = await formatValue(vybeStakeBalance);
+	vybeStakeBalance = formatValue(vybeStakeBalance);
 	document.getElementById("vybe-network-stake").innerHTML = `Global Staked: ${vybeStakeBalance}`;
 }
 
 async function updateStake() {
-	const vybeStakeBalance = await formatValue(await getStakedVYBE());
+	const vybeStakeBalance = formatValue(await getStakedVYBE());
 	let stakeChange = document.getElementById("vybe-stake").value;
 
 	if (stakeChange == 0) {
@@ -347,7 +347,7 @@ setInterval(function () {
 	refreshStats();
 }, 1000);
 
-async function formatValue(value) {
+function formatValue(value) {
 	return currency(value, {
 		separator: ','
 	}).format().replace('$', '');
