@@ -318,11 +318,11 @@ async function updateStake() {
 		displayWithdrawWarning = true;
 		if (depositModel) {
 			// increaseStake
-			document.getElementById("vybe-stake-rewards-warning").innerHTML = `Please claim your rewards before you deposit into staking`;
+			document.getElementById("vybe-stake-rewards-warning").innerHTML = `If you have rewards, increasing your stake will remove them. Would you like to proceed?`;
 			document.getElementById("model-button").innerHTML = "Confirm Deposit";
 		} else {
 			// decreaseStake
-			document.getElementById("vybe-stake-rewards-warning").innerHTML = `Please claim your rewards before you withdraw from staking`;
+			document.getElementById("vybe-stake-rewards-warning").innerHTML = `If you have rewards, decreasing your stake will remove them. Would you like to proceed?`;
 			document.getElementById("model-button").innerHTML = "Confirm Withdraw";
 		}
 	}
