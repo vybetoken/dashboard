@@ -23,7 +23,7 @@ window.addEventListener("load", async () => {
 			console.error(e);
 		}
 	} else {
-		alert("This site requires an up-to-date MetaMask or another service enabling Web3 to work.")
+		alert("Vybe Dashboard requires an up-to-date MetaMask or another service enabling Web3 to work.")
 	}
 });
 
