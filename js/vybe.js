@@ -343,9 +343,10 @@ async function refreshStats() {
 	getVYBEPriceETH();
 }
 
-setInterval(function () {
-	refreshStats();
-}, 1000);
+// refresh stats on changes
+ethereum.on('chainChanged', async () => {
+	await refreshStats();
+});
 
 async function formatValue(value) {
 	return currency(value, {
