@@ -13,19 +13,28 @@ const STAKE_ADDRESS = "0x1Bcc32Ac1C994CE7e9526FbaF95f37AbC0B2EC39";
 let vybeUSD;
 let vybeETH;
 
-window.addEventListener("load", async () => {
-	if (window.ethereum) {
-		const web3 = new Web3(window.ethereum);
-		try {
-			await window.ethereum.enable();
-			return web3;
-		} catch (e) {
-			console.error(e);
-		}
+if (window.ethereum) {
+	handleEthereum();
+} else {
+	window.addEventListener('ethereum#initialized', handleEthereum, {
+		once: true,
+	});
+	// If the event is not dispatched by the end of the timeout,
+	// the user probably doesn't have MetaMask installed.
+	setTimeout(handleEthereum, 3000); // 3 seconds
+}
+
+async function handleEthereum() {
+	const { ethereum } = window;
+
+	if (ethereum) {
+		await ethereum.request({method: 'eth_requestAccounts'});
+		console.log('Ethereum successfully detected!');
 	} else {
-		alert("Vybe Dashboard requires an up-to-date MetaMask or another service enabling Web3 to work.")
+		console.log('Ethereum not detected!');
+		alert("Vybe Dashboard requires an up-to-date MetaMask or another service enabling Web3 to work.");
 	}
-});
+}
 
 async function vybeCall(method, args) {
 	if (!Array.isArray(args)) {
@@ -344,9 +353,10 @@ async function refreshStats() {
 }
 
 // refresh stats on changes
-ethereum.on('chainChanged', async () => {
-	await refreshStats();
-});
+ethereum.on('chainChanged', refreshStats);
+ethereum.on('networkChanged', refreshStats);
+ethereum.on('accountsChanged', refreshStats);
+setInterval(refreshStats, 1000);
 
 async function formatValue(value) {
 	return currency(value, {
