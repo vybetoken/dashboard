@@ -12,6 +12,7 @@ const STAKE_ADDRESS = "0x1Bcc32Ac1C994CE7e9526FbaF95f37AbC0B2EC39";
 
 let vybeUSD;
 let vybeETH;
+let globalDisplayVybeStakeBalanceString;
 
 if (window.ethereum) {
 	handleEthereum();
@@ -265,6 +266,18 @@ async function displayVybeStakeBalance() {
 	document.getElementById("stake-balance-vybe").innerHTML = vybeStakeBalance;
 }
 
+async function globalDisplayVybeStakeBalance() {
+	const vybeStakeBalance = await getStakedVYBE();
+	const vybeStakeBalanceFormatted = await formatValue(vybeStakeBalance);
+	const vybeStakeTotalBalance = await getTotalStakedVYBE();
+	const vybeStakeTotalBalanceFormatted = await formatValue(vybeStakeTotalBalance);
+	const percent = (vybeStakeBalance / vybeStakeTotalBalance * 100).toFixed(4);
+
+	tippy('#vybe-network-stake', {
+	  content: `Your Stake: ${ vybeStakeBalanceFormatted } / ${ vybeStakeTotalBalanceFormatted } (${ percent }%)`,
+	});
+}
+
 async function displayStakedUSDValue() {
 	const vybeStakeBalance = await getStakedVYBE();
 	const usdBalance = await formatUSD(vybeStakeBalance * vybeUSD);
@@ -340,23 +353,24 @@ async function updateStake() {
 
 async function refreshStats() {
 	// user balance
-	displayVybeBalance();
-	displayVybeStakeBalance();
+	await displayVybeBalance();
+	await displayVybeStakeBalance();
 	// rewards
-	displayVybeRewardsBalance();
+	await displayVybeRewardsBalance();
 	// network stats
-	displayVybeNetworkStake();
+	await displayVybeNetworkStake();
+	await globalDisplayVybeStakeBalance();
 
 	// pull coingecko
-	getVYBEPriceUSD();
-	getVYBEPriceETH();
+	await getVYBEPriceUSD();
+	await getVYBEPriceETH();
 }
 
 // refresh stats on changes
 ethereum.on('chainChanged', refreshStats);
 ethereum.on('networkChanged', refreshStats);
 ethereum.on('accountsChanged', refreshStats);
-setInterval(refreshStats, 1000);
+setInterval(refreshStats, 5000);
 
 async function formatValue(value) {
 	return currency(value, {
@@ -397,3 +411,7 @@ async function onlyNumbers(num){
       num.value = num.value.replace(/[^0-9]*/g,"")
    }
 }
+
+tippy('#logo', {
+  content: `I know, Vybe is cool 🤫`,
+});
