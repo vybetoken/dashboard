@@ -313,7 +313,7 @@ async function displayVybeRewardsETHBalance() {
 async function displayVybeNetworkStake() {
 	let vybeStakeBalance = await getTotalStakedVYBE();
 	vybeStakeBalance = await formatValue(vybeStakeBalance);
-	document.getElementById("vybe-network-stake").innerHTML = `Global Staked: ${vybeStakeBalance}`;
+	document.getElementById("vybe-network-stake").innerHTML = `Global Stake: ${vybeStakeBalance}`;
 }
 
 async function updateStake() {
