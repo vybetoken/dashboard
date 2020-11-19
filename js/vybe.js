@@ -313,7 +313,7 @@ async function displayVybeRewardsETHBalance() {
 async function displayVybeNetworkStake() {
 	let vybeStakeBalance = await getTotalStakedVYBE();
 	vybeStakeBalance = await formatValue(vybeStakeBalance);
-	document.getElementById("vybe-network-stake").innerHTML = `Global Stake: ${vybeStakeBalance}`;
+	document.getElementById("vybe-network-stake").innerHTML = `Network Stake: ${vybeStakeBalance}`;
 }
 
 async function updateStake() {
@@ -411,7 +411,3 @@ async function onlyNumbers(num){
       num.value = num.value.replace(/[^0-9]*/g,"")
    }
 }
-
-tippy('#logo', {
-  content: `I know, Vybe is cool 🤫`,
-});
