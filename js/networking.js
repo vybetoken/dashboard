@@ -46,7 +46,7 @@ async function getVybeContractAddresses() {
 		vybeABI: VYBE_ABI,
 		stake: "0x1Bcc32Ac1C994CE7e9526FbaF95f37AbC0B2EC39",
 		stakeABI: STAKE_ABI,
-        dao: "0x0aBcbddEAB37ad535Ffa1eDfA8af04731c317Be3",
+        dao: "0x9E6a97d3a65BFd1dDC6D15025f985eBc9c8f2b0A",
         daoABI: DAO_ABI
 	}
 
