@@ -1,25 +1,30 @@
 async function getTotalStakedVYBE() {
-	const staked = await stakeProvider.totalStaked();
+	const staked = await stakeContract.totalStaked();
 	return ethers.utils.formatUnits(staked, 18);
 }
 
 async function getVYBEBalance() {
-	const balance = await vybeProvider.balanceOf(userAddress);
+	const balance = await vybeContract.balanceOf(userAddress);
 	return ethers.utils.formatUnits(balance, 18);
 }
 
 async function getVYBESupply() {
-	const totalSupply = await vybeProvider.totalSupply();
+	const totalSupply = await vybeContract.totalSupply();
 	return ethers.utils.formatUnits(totalSupply, 18);
 }
 
 async function getStakedVYBE() {
-	const staked = await stakeProvider.staked(userAddress);
-	return ethers.utils.formatUnits(staked, 18);
+	try {
+		const staked = await stakeContract.staked(userAddress);
+		return ethers.utils.formatUnits(staked, 18);
+	} catch (err) {
+		console.log(`Failed to determine vybe stake balance`);
+		return 0;
+	}
 }
 
 async function getCurrentRewardsAmount() {
-	const rewards = await stakeProvider.calculateRewards(userAddress);
+	const rewards = await stakeContract.calculateRewards(userAddress, overrideGasLimit);
 	return ethers.utils.formatUnits(rewards, 18);
 }
 
@@ -29,9 +34,26 @@ async function increaseStake(amount) {
 		return false;
 	}
 
-	await stakeSigner.increaseStake(amount);
-    successAlert("Stake Increased!");
-	return true;
+	try {
+
+		if (
+			(ethers.BigNumber.from(amount)).gt(
+				ethers.BigNumber.from(
+					await vybeContract.allowance(userAddress, contractData.stake)
+				)
+			)
+		) {
+			await vybeContract.approve(contractData.stake, UINT256_MAX);
+		}
+
+		await stakeContract.increaseStake(amount);
+		successAlert("Stake Increased!");
+		return true;
+
+	} catch (err) {
+		console.log(err);
+		return false
+	}
 }
 
 async function decreaseStake(amount) {
@@ -40,14 +62,26 @@ async function decreaseStake(amount) {
 		return false;
 	}
 
-	await stakeSigner.decreaseStake(amount);
-    successAlert("Stake Decreased!");
-	return true;
+	try {
+		await stakeContract.decreaseStake(amount);
+		successAlert("Stake Decreased!");
+		return true;
+
+	} catch (err) {
+		console.log(err);
+		return false
+	}
 }
 
 async function claimRewards() {
-	await stakeSigner.claimRewards();
-    successAlert("Rewards Claimed!");
-	refreshStats();
-	return true;
+	try {
+		await stakeContract.claimRewards();
+		refreshStats();
+		successAlert("Rewards Claimed!");
+		return true;
+
+	} catch (e) {
+		console.log(`error: `, e);
+		return false;
+	}
 }

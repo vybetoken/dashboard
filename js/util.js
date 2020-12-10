@@ -13,7 +13,7 @@ function formatAtomic(value, decimals) {
         value = "0x0";
     }
 
-    value = (new ethers.BigNumber(value)).toString(10, 19);
+    value = (ethers.BigNumber.from(value)).toString(10, 19);
     let left = "";
     while (value.length > 18) {
         left += value[0];
@@ -47,7 +47,7 @@ async function successAlert(text) {
     Toastify({
         text: text,
         gravity: "top",
-        destination: `https://etherscan.io/txsPending?a=${ethereum.selectedAddress}`,
+        destination: `${contractData.explorer}/txsPending?a=${ethereum.selectedAddress}`,
         newWindow: true,
         position: "left",
         backgroundColor: "#fe7c96",
@@ -70,3 +70,13 @@ async function onlyNumbers(num){
       num.value = num.value.replace(/[^0-9]*/g,"")
    }
 }
+
+async function isValidURL(string) {
+	var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    return !!pattern.test(string);
+};
