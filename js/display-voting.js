@@ -30,6 +30,11 @@ async function displayProposals() {
             tippy(`#proposal-value-${proposal.id}`, {
                 content: `${ethValue} ETH / ${usdValue}`,
             });
+            const currentVotesFormatted = await formatValue(proposal.votes);
+            const requiredVotesFormatted = await formatValue(proposal.requiedVotes);
+            tippy(`#progress-${proposal.id}`, {
+                content: `${currentVotesFormatted} / ${requiredVotesFormatted} (${proposal.votePercent}%)`,
+            });
         }
         document.getElementById("proposals-loading").style.display = "none";
         document.getElementById("proposals-table").style.display = "block";
@@ -48,21 +53,38 @@ async function buildProposalRow(proposal) {
     if (await isValidURL(info)) {
         info = `<a href="${info}">${info}</a>`;
     }
-    let completable = "No";
-    if (proposal.completable) {
-        completable = "Yes";
-    }
+    // <tr>
+//   <td><a href="#">0x2402...Ex88</a></td>
+//   <td><a href="#">github.com/vybe..</a></td>
+//   <td> 100 VYBE ($2,732.11) </td>
+//   <td> Mar 1, 2021 </td>
+//   <td>
+//     <div class="progress">
+//       <div class="progress-bar bg-success" role="progressbar" style="width: 5.1%" aria-valuenow="5.1" aria-valuemin="0" aria-valuemax="100"></div>
+//     </div>
+//   </td>
+//   <td>
+//       <div class="btn-group" role="group" aria-label="Basic example">
+//         <button type="button" class="btn btn-gradient-success btn-rounded mr-1">Approve</button>
+//         <button type="button" class="btn btn-gradient-danger btn-rounded">Refuse</button>
+//       </div>
+//   </td>
+// </tr>
 
     return `<tr>
       <td><a href="${contractData.explorer}/address/${proposal.address}">${formattedAddress}</a></td>
       <td>${proposal.type}</td>
       <td>${info}</td>
       <td id="proposal-value-${proposal.id}">${vybeValueFormatted} VYBE</td>
-      <td>${completable}</td>
+      <td>
+        <div class="progress" id="progress-${proposal.id}">
+            <div class="progress-bar bg-success" role="progressbar" style="width: ${proposal.votePercent}%" aria-valuenow="${proposal.votePercent}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </td>
       <td>
         <div class="btn-group" role="group" aria-label="Vote Buttons">
-            <button type="button" class="btn btn-gradient-success btn-rounded mr-1" onclick="vote(${proposal.id})">Approve</button>
-            <button type="button" class="btn btn-gradient-danger btn-rounded" onclick="unvote(${proposal.id})">Refuse</button>
+            <button type="button" class="btn btn-gradient-success btn-rounded mr-1" onclick="vote(${proposal.id})" id="approve-${proposal.id}">Approve</button>
+            <button type="button" class="btn btn-gradient-danger btn-rounded" onclick="unvote(${proposal.id})" id="refuse-${proposal.id}">Refuse</button>
         </div>
       </td>
     </tr>`;

@@ -93,6 +93,7 @@ async function proposeFund(amount, info) {
 
 async function getActiveProposals() {
     let proposals = await getNewProposalEvents();
+    const totalStaked = await stakeContract.totalStaked();
 
     let p = 0;
     while (p < proposals.length) {
@@ -121,6 +122,7 @@ async function getActiveProposals() {
                 const fundInfo = await daoContract._fundProposals(proposals[p].id);
                 proposals[p].amount = ethers.utils.formatUnits(fundInfo.amount, 18);
                 proposals[p].address = fundInfo.destination;
+                proposals[p].requiedVotes = ethers.utils.formatUnits(totalStaked.div(2).add(1), 18);
                 info = fundInfo.info;
                 break;
 
@@ -131,6 +133,7 @@ async function getActiveProposals() {
                 proposals[p].address = (await daoContract._melodyAdditionProposals(proposals[p].id)).sub(26, 40);
                 const additionInfo = await daoContract._melodyAdditionProposals(proposals[p].id);
                 info = additionInfo.info;
+                proposals[p].requiedVotes = ethers.utils.formatUnits(totalStaked.div(3).mul(2).add(1), 18);
                 break;
 
             case 3:
@@ -140,6 +143,7 @@ async function getActiveProposals() {
                 proposals[p].address = (await daoContract._melodyRemovalProposals(proposals[p].id)).substr(26, 40);
                 const removalInfo = await daoContract._melodyRemovalProposals(proposals[p].id);
                 info = removalInfo.info;
+                proposals[p].requiedVotes = ethers.utils.formatUnits(totalStaked.div(2).add(1), 18);
                 break;
 
             case 4:
@@ -149,6 +153,7 @@ async function getActiveProposals() {
                 proposals[p].address = (await daoContract._stakeUpgradeProposals(proposals[p].id)).substr(26, 40);
                 const upgradeInfo = await daoContract._stakeUpgradeProposals(proposals[p].id);
                 info = upgradeInfo.info;
+                proposals[p].requiedVotes = ethers.utils.formatUnits(totalStaked.div(5).mul(4).add(1), 18);
                 break;
 
             case 5:
@@ -158,6 +163,7 @@ async function getActiveProposals() {
                 proposals[p].address = (await daoContract._daoUpgradeProposals(proposals[p].id)).substr(26, 40);
                 const daoInfo = await daoContract._daoUpgradeProposals(proposals[p].id);
                 info = daoInfo.info;
+                proposals[p].requiedVotes = ethers.utils.formatUnits(totalStaked.div(5).mul(4).add(1), 18);
                 break;
         }
 
@@ -205,6 +211,7 @@ async function getActiveProposals() {
         }
         proposals[p].completable = proposals[p].votes.gt(threshold);
         proposals[p].votes = formatAtomic(proposals[p].votes.toString(), 0);
+        proposals[p].votePercent = (proposals[p].votes / proposals[p].requiedVotes * 100).toFixed(2);
         p++;
     }
 

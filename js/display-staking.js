@@ -60,8 +60,8 @@ async function displayVybeRewardsBalance() {
 async function displayVybeNetworkStake() {
 	const vybeStakeBalance = await getStakedVYBE();
 	const vybeStakeBalanceFormatted = await formatValue(vybeStakeBalance);
-	const vybeStakeTotalBalance = await getTotalStakedVYBE();
-	const vybeStakeTotalBalanceFormatted = await formatValue(vybeStakeTotalBalance);
+	const totalStakedBalance = await getTotalStakedVYBE();
+	const vybeStakeTotalBalanceFormatted = await formatValue(totalStakedBalance);
 	const percent = (vybeStakeBalance / vybeStakeTotalBalance * 100).toFixed(4);
 
     vybeNetworkStakeElement.innerHTML = `Network Stake: ${vybeStakeTotalBalanceFormatted}`;
