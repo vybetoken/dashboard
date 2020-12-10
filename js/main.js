@@ -1,5 +1,5 @@
-const provider = new ethers.providers.Web3Provider(window.ethereum);
-const signer = provider.getSigner();
+let provider;
+let signer;
 let contractData;
 let userAddress;
 let vybeUSD;
@@ -37,6 +37,11 @@ async function refreshStats() {
 }
 
 async function init() {
+	// enable ethereum
+	await window.ethereum.enable();
+	provider = new ethers.providers.Web3Provider(window.ethereum);
+	signer = provider.getSigner();
+	// get user address
 	userAddress = await signer.getAddress();
 	contractData = await getVybeContractAddresses();
 	vybeContract = new ethers.Contract(contractData.vybe, contractData.vybeABI, signer);
