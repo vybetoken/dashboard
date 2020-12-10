@@ -13,8 +13,6 @@ const overrideGasLimit = { gasLimit: 300000 };
 const UINT256_MAX = "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
 
 async function refreshStats() {
-	// pull price data
-	getVYBEPriceData();
 	if (typeof displayUserBalance === "function") {
 		// user balance
 		displayUserBalance();
@@ -41,6 +39,8 @@ async function init() {
 	await window.ethereum.enable();
 	provider = new ethers.providers.Web3Provider(window.ethereum);
 	signer = provider.getSigner();
+	// get price data
+	await getVYBEPriceData();
 	// get user address
 	userAddress = await signer.getAddress();
 	contractData = await getVybeContractAddresses();
@@ -54,3 +54,4 @@ async function init() {
 
 // initialize
 init();
+setInterval(getVYBEPriceData, 60 * 1000);
