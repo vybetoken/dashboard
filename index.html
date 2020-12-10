@@ -33,42 +33,65 @@ SOFTWARE.
     <link rel="stylesheet" href="css/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="css/vendor.bundle.base.css">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/model.css">
+    <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="css/mobile.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link data-n-head="ssr" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;700;900&display=swap">
     <link rel="shortcut icon" href="https://vybe.finance/favicon.ico" />
 </head>
 
-<body onload="refreshStats()">
+<body>
     <div class="container-scroller">
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo" id="logo" href="https://vybe.finance"><img src="https://vybe.finance/_nuxt/img/logo.c28bfa9.svg" alt="Vybe logo" style="height:50%; width: 75px; margin-left: 2.5rem;"></a>
-                <a class="navbar-brand brand-logo-mini" id="logo" href="https://vybe.finance"><img src="https://vybe.finance/_nuxt/img/logo.c28bfa9.svg" alt="Vybe logo" style="height:50%; width: 75px; margin-left: 2.5rem;"></a>
+                <a class="navbar-brand brand-logo" id="logo" href="https://vybe.finance">
+                    <img src="https://vybe.finance/_nuxt/img/logo.c28bfa9.svg" alt="Vybe logo" style="height:50%; width: 75px; margin-left: 2.5rem;">
+                </a>
+                <a class="navbar-brand brand-logo-mini" id="logo" href="https://vybe.finance">
+                    <img src="https://vybe.finance/_nuxt/img/logo.c28bfa9.svg" alt="Vybe logo" style="height:50%; width: 75px; margin-left: 2.5rem;">
+                </a>
             </div>
             <div class="navbar-menu-wrapper d-flex align-items-stretch">
                 <ul class="navbar-nav navbar-nav-right">
-                    <li class="nav-item nav-profile">
-                        <div class="nav-profile-text">
-                            <p class="mb-1 text-black" id="vybe-network-stake"></p>
-                        </div>
+                    <li class="nav-item">
+                        <div><p class="mb-1 text-black" id="vybe-network-stake"></p></div>
                     </li>
                 </ul>
             </div>
         </nav>
         <div class="container-fluid page-body-wrapper">
+            <!-- partial:partials/_sidebar.html -->
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <span class="menu-title">Staking</span>
+                            <i class="mdi mdi-home menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="voting.html">
+                            <span class="menu-title">Voting</span>
+                            <i class="mdi mdi-chart-bar menu-icon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- partial -->
             <div class="main-panel">
                 <div class="content-wrapper">
+                    <div class="page-header">
+                        <h3 class="page-title"> Staking </h3>
+                    </div>
                     <div class="row">
                         <div class="col-md-4 stretch-card grid-margin">
                             <div class="card bg-gradient-danger card-img-holder text-white">
                                 <div class="card-body">
                                     <img src="img/circle.svg" class="card-img-absolute" alt="circle-image" />
                                     <h4 class="font-weight-normal mb-3">Current Balance<i class="mdi mdi-chart-line mdi-24px float-right"></i></h4>
-                                    <h2 id="user-balance-vybe" class="mb-5"></h2>
-                                    <h6 id="user-balance-usd" class="card-text"></h6>
-                                    <h6 id="user-balance-eth" class="card-text"></h6>
+                                    <h2 id="user-balance-vybe" class="mb-5">0.00</h2>
+                                    <h6 id="user-balance-usd" class="card-text">$0.00</h6>
+                                    <h6 id="user-balance-eth" class="card-text">0.00</h6>
                                     <button type="button" class="btn btn-gradient-light btn-rounded btn-fw btn-mobile" onclick="openStakeModal(true)">Stake</button>
                                 </div>
                             </div>
@@ -78,9 +101,9 @@ SOFTWARE.
                                 <div class="card-body">
                                     <img src="img/circle.svg" class="card-img-absolute" alt="circle-image" />
                                     <h4 class="font-weight-normal mb-3">Staked Balance<i class="mdi mdi-bookmark-outline mdi-24px float-right"></i></h4>
-                                    <h2 id="stake-balance-vybe" class="mb-5"></h2>
-                                    <h6 id="stake-balance-usd" class="card-text"></h6>
-                                    <h6 id="stake-balance-eth" class="card-text"></h6>
+                                    <h2 id="stake-balance-vybe" class="mb-5">0.00</h2>
+                                    <h6 id="stake-balance-usd" class="card-text">$0.00</h6>
+                                    <h6 id="stake-balance-eth" class="card-text">0.00</h6>
                                     <button type="button" class="btn btn-gradient-light btn-rounded btn-fw btn-mobile" onclick="openStakeModal(false)">Withdraw</button>
                                 </div>
                             </div>
@@ -90,9 +113,9 @@ SOFTWARE.
                                 <div class="card-body">
                                     <img src="img/circle.svg" class="card-img-absolute" alt="circle-image" />
                                     <h4 class="font-weight-normal mb-3">Available Rewards<i class="mdi mdi-diamond mdi-24px float-right"></i></h4>
-                                    <h2 id="vybe-rewards-balance" class="mb-5"></h2>
-                                    <h6 id="vybe-rewards-balance-usd" class="card-text"></h6>
-                                    <h6 id="vybe-rewards-balance-eth" class="card-text"></h6>
+                                    <h2 id="vybe-rewards-balance" class="mb-5">0.00</h2>
+                                    <h6 id="vybe-rewards-balance-usd" class="card-text">$0.00</h6>
+                                    <h6 id="vybe-rewards-balance-eth" class="card-text">0.00</h6>
                                     <button type="button" class="btn btn-gradient-light btn-rounded btn-fw btn-mobile" onclick="claimRewards()">Claim</button>
                                 </div>
                             </div>
@@ -137,27 +160,32 @@ SOFTWARE.
             </div>
         </div>
     </div>
+    <script type="text/javascript" src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
     <script src="js/currency.min.js"></script>
-    <script src="js/vybe-model.js"></script>
-    <script src="js/vybe.js"></script>
+    <script src="js/staking-modal.js"></script>
+    <script src="js/networking.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/staking.js"></script>
+    <script src="js/display-staking.js"></script>
+    <script src="js/main.js"></script>
 
     <!-- The Modal -->
     <div id="stakeModal">
         <!-- Modal content -->
         <div id="stakeModalContent">
-            <span id="closeStakeModal" onclick="closeModal()">&times;</span>
+            <span id="closeStakeModal" onclick="closeStakeModal()">&times;</span>
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title" id="modal-title"></h4>
                     <div class="form-group">
-                        <h6 id="model-subtitle" class="card-text"></h6>
-                        <input id="vybe-stake" type="number" class="form-control" aria-label="Change amount" onkeyup="onlyNumbers(this)">
+                        <h6 id="modal-subtitle" class="card-text"></h6>
+                        <input id="stake-number" type="number" class="form-control" aria-label="Change amount" onkeyup="onlyNumbers(this)">
                     </div>
-                    <h6 id="vybe-stake-rewards-warning" class="card-text" style="color: red;"></h6>
-                    <button type="button" id="model-button" class="btn btn-gradient-primary btn-rounded btn-fw" onclick="updateStake()">Withdraw</button>
+                    <h6 id="stake-rewards-warning" class="card-text" style="color: red;"></h6>
+                    <button type="button" id="modal-button" class="btn btn-gradient-primary btn-rounded btn-fw" onclick="updateStake()">Withdraw</button>
                 </div>
             </div>
         </div>
