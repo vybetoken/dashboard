@@ -1,16 +1,31 @@
 async function getTotalStakedVYBE() {
-	const staked = await stakeContract.totalStaked();
-	return ethers.utils.formatUnits(staked, 18);
+	try {
+		const staked = await stakeContract.totalStaked();
+		return ethers.utils.formatUnits(staked, 18);
+	} catch (err) {
+		console.log(`Failed to determine total staked vybe`);
+		return ethers.utils.formatUnits(0, 18);
+	}
 }
 
 async function getVYBEBalance() {
-	const balance = await vybeContract.balanceOf(userAddress);
-	return ethers.utils.formatUnits(balance, 18);
+	try {
+		const balance = await vybeContract.balanceOf(userAddress);
+		return ethers.utils.formatUnits(balance, 18);
+	} catch (err) {
+		console.log(`Failed to determine vybe balance`);
+		return ethers.utils.formatUnits(0, 18);
+	}
 }
 
 async function getVYBESupply() {
-	const totalSupply = await vybeContract.totalSupply();
-	return ethers.utils.formatUnits(totalSupply, 18);
+	try {
+		const totalSupply = await vybeContract.totalSupply();
+		return ethers.utils.formatUnits(totalSupply, 18);
+	} catch (err) {
+		console.log(`Failed to determine Vybe total supply`);
+		return ethers.utils.formatUnits(0, 18);
+	}
 }
 
 async function getStakedVYBE() {
@@ -19,13 +34,18 @@ async function getStakedVYBE() {
 		return ethers.utils.formatUnits(staked, 18);
 	} catch (err) {
 		console.log(`Failed to determine vybe stake balance`);
-		return 0;
+		return ethers.utils.formatUnits(0, 18);
 	}
 }
 
 async function getCurrentRewardsAmount() {
-	const rewards = await stakeContract.calculateRewards(userAddress, overrideGasLimit);
-	return ethers.utils.formatUnits(rewards, 18);
+	try {
+		const rewards = await stakeContract.calculateRewards(userAddress, overrideGasLimit);
+		return ethers.utils.formatUnits(rewards, 18);
+	} catch {
+		// fail silently
+		return ethers.utils.formatUnits(0, 18);
+	}
 }
 
 async function increaseStake(amount) {

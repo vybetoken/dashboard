@@ -11,8 +11,13 @@ async function proposalsCount() {
 }
 
 async function getDAOBalance() {
-    const balance = await vybeContract.balanceOf(contractData.dao);
-    return ethers.utils.formatUnits(balance, 18);
+    try {
+        const balance = await vybeContract.balanceOf(contractData.dao);
+        return ethers.utils.formatUnits(balance, 18);
+    } catch (err) {
+        console.log(`Failed to determine DAO balance`);
+        return ethers.utils.formatUnits(0, 18);
+    }
 }
 
 async function getNewProposalEvents() {
