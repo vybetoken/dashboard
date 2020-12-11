@@ -33,7 +33,8 @@ async function displayProposals() {
             const currentVotesFormatted = await formatValue(proposal.votes);
             const requiredVotesFormatted = await formatValue(proposal.requiedVotes);
             tippy(`#progress-${proposal.id}`, {
-                content: `${currentVotesFormatted} / ${requiredVotesFormatted} (${proposal.votePercent}%)`,
+                allowHTML: true,
+                content: `Current Vote: ${currentVotesFormatted} (${proposal.votePercent}%)<br>Required Vote: ${requiredVotesFormatted}`,
             });
         }
         document.getElementById("proposals-loading").style.display = "none";
@@ -53,23 +54,6 @@ async function buildProposalRow(proposal) {
     if (await isValidURL(info)) {
         info = `<a href="${info}">${info}</a>`;
     }
-    // <tr>
-//   <td><a href="#">0x2402...Ex88</a></td>
-//   <td><a href="#">github.com/vybe..</a></td>
-//   <td> 100 VYBE ($2,732.11) </td>
-//   <td> Mar 1, 2021 </td>
-//   <td>
-//     <div class="progress">
-//       <div class="progress-bar bg-success" role="progressbar" style="width: 5.1%" aria-valuenow="5.1" aria-valuemin="0" aria-valuemax="100"></div>
-//     </div>
-//   </td>
-//   <td>
-//       <div class="btn-group" role="group" aria-label="Basic example">
-//         <button type="button" class="btn btn-gradient-success btn-rounded mr-1">Approve</button>
-//         <button type="button" class="btn btn-gradient-danger btn-rounded">Refuse</button>
-//       </div>
-//   </td>
-// </tr>
 
     return `<tr>
       <td><a href="${contractData.explorer}/address/${proposal.address}">${formattedAddress}</a></td>

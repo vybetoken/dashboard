@@ -40,10 +40,11 @@ async function getStakedVYBE() {
 
 async function getCurrentRewardsAmount() {
 	try {
-		const rewards = await stakeContract.calculateRewards(userAddress, overrideGasLimit);
+		const rewards = await stakeContract.calculateRewards(userAddress);
 		return ethers.utils.formatUnits(rewards, 18);
 	} catch {
 		// fail silently
+		isStaking = false;
 		return ethers.utils.formatUnits(0, 18);
 	}
 }

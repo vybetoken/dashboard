@@ -9,6 +9,7 @@ let stakeContract;
 let daoContract;
 let lastBlock;
 let activeProposals;
+let isStaking = true;
 const overrideGasLimit = { gasLimit: 300000 };
 const UINT256_MAX = "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
 
@@ -20,17 +21,10 @@ async function refreshStats() {
 		displayVybeStakeBalance();
 		// network stats
 		displayVybeNetworkStake();
-		// rewards
-		displayVybeRewardsBalance();
-		// refresh stats on changes
-		setInterval(refreshStats, 5000);
-	}
-
-	if (typeof displayNetworkProposalCount === "function") {
-		// load proposals
-		await displayProposals();
-		// proposal count
-		await displayNetworkProposalCount();
+		if (isStaking) {
+			// rewards
+			displayVybeRewardsBalance();
+		}
 	}
 }
 
@@ -49,9 +43,20 @@ async function init() {
 	daoContract = new ethers.Contract(contractData.dao, contractData.daoABI, signer);
 	lastBlock = await provider.getBlockNumber() || 0;
 
-	await refreshStats();
+	// attempt to load staking
+	refreshStats();
+
+	// load dao if on voting page
+	if (typeof displayNetworkProposalCount === "function") {
+		// load proposals
+		await displayProposals();
+		// proposal count
+		await displayNetworkProposalCount();
+	}
 }
 
 // initialize
 init();
+// refresh stats on changes
+setInterval(refreshStats, 5000);
 setInterval(getVYBEPriceData, 60 * 1000);
