@@ -34,34 +34,17 @@ async function displayProposals() {
             }
 
             let displayRow = await buildProposalRow(proposal);
-            const ethValue = await formatValue(proposal.amount * vybeETH);
-            const usdValue = await formatUSD(proposal.amount * vybeUSD);
 
             if (proposal.meta.completed) {
                 inactiveTable = inactiveTable + displayRow;
-
-                // set table contents
-                document.getElementById("proposals-table-body").innerHTML = activeTable + inactiveTable;
             } else {
                 activeTable = activeTable + displayRow;
-
-                // set table contents
-                document.getElementById("proposals-table-body").innerHTML = activeTable + inactiveTable;
-
-                // create tooltip for proposal value
-                tippy(`#proposal-value-${proposal.id}`, {
-                    content: `${ethValue} ETH / ${usdValue}`,
-                });
-
-                // create tooltip for vote progress
-                const currentVotesFormatted = await formatValue(proposal.votes);
-                const requiredVotesFormatted = await formatValue(proposal.requiedVotes);
-                tippy(`#progress-${proposal.id}`, {
-                    allowHTML: true,
-                    content: `Current Vote: ${currentVotesFormatted} (${proposal.votePercent}%)<br>Required Vote: ${requiredVotesFormatted}`,
-                });
             }
         }
+
+        // set table contents
+        document.getElementById("proposals-table-body").innerHTML = activeTable + inactiveTable;
+        addTooltips();
 
         // hide loading and make table visible
         document.getElementById("proposals-loading").style.display = "none";
@@ -88,19 +71,22 @@ async function buildProposalRow(proposal) {
     let buttons = ``;
     let progress = ``;
     if (proposal.meta.completed) {
-        progress = `Completed`;
+        progress = `<div>Completed</div>`;
+
     } else if (proposal.completable) {
         // show complete proposal button
         buttons = `
         <div class="btn-group" role="group" aria-label="Vote Buttons">
             <button type="button" class="btn btn-gradient-success btn-rounded mr-1" onclick="complete(${proposal.id})" id="complete-${proposal.id}">Complete</button>
         </div>`;
+
     } else if (proposal.voters.includes(userAddress)) {
         // show unvote button
         buttons = `
         <div class="btn-group" role="group" aria-label="Vote Buttons">
             <button type="button" class="btn btn-gradient-danger btn-rounded" onclick="unvote(${proposal.id})" id="refuse-${proposal.id}">Refuse</button>
         </div>`;
+
     } else {
         // show vote button
         buttons = `
@@ -109,9 +95,10 @@ async function buildProposalRow(proposal) {
         </div>`;
 
         // show progress
-        progress = `<div class="progress" id="progress-${proposal.id}">
+        progress = `<div class="progress">
                     <div class="progress-bar bg-success" role="progressbar" style="width: ${proposal.votePercent}%" aria-valuenow="${proposal.votePercent}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>`;
+
     }
 
     // return complete proposal row
@@ -120,11 +107,35 @@ async function buildProposalRow(proposal) {
       <td>${proposal.type}</td>
       <td>${info}</td>
       <td id="proposal-value-${proposal.id}">${vybeValueFormatted} VYBE</td>
-      <td>
-        ${progress}
-      </td>
-      <td>
-        ${buttons}
-      </td>
+      <td id="progress-${proposal.id}">${progress}</td>
+      <td>${buttons}</td>
     </tr>`;
+}
+
+async function addTooltips() {
+    for (let proposal of activeProposals) {
+        // filter out events that are improperly formatted or outdated
+        if (!proposal) {
+            continue;
+        } else if (typeof proposal.type !== "string") {
+            continue;
+        } else if (proposal.meta.completed) {
+            continue;
+        }
+
+        const ethValue = await formatValue(proposal.amount * vybeETH);
+        const usdValue = await formatUSD(proposal.amount * vybeUSD);
+        // create tooltip for proposal value
+        tippy(`#proposal-value-${proposal.id}`, {
+            content: `${ethValue} ETH / ${usdValue}`,
+        });
+
+        // create tooltip for vote progress
+        const currentVotesFormatted = await formatValue(ethers.utils.formatUnits(proposal.votes, 18));
+        const requiredVotesFormatted = await formatValue(ethers.utils.formatUnits(proposal.requiedVotes, 18));
+        tippy(`#progress-${proposal.id}`, {
+            allowHTML: true,
+            content: `Current Vote: ${currentVotesFormatted} (${proposal.votePercent}%)<br>Required Vote: ${requiredVotesFormatted}`,
+        });
+    }
 }

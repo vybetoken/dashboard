@@ -119,7 +119,7 @@ async function getActiveProposals() {
         };
         newProposals[pid].meta = await daoContract.proposals(pid);
 
-        let threshold = ethers.BigNumber.from(await stakeContract.totalStaked());
+        let threshold = await stakeContract.totalStaked();
         let info;
         // The names of these mappings should've had their _ removed when they were made public.
         switch (newProposals[pid].meta.pType) {
@@ -129,7 +129,6 @@ async function getActiveProposals() {
                 const fundInfo = await daoContract._fundProposals(newProposals[pid].id);
                 newProposals[pid].amount = ethers.utils.formatUnits(fundInfo.amount, 18);
                 newProposals[pid].address = fundInfo.destination;
-                newProposals[pid].requiedVotes = ethers.utils.formatUnits(totalStaked.div(2).add(1), 18);
                 info = fundInfo.info;
                 break;
 
@@ -140,7 +139,6 @@ async function getActiveProposals() {
                 newProposals[pid].address = (await daoContract._melodyAdditionProposals(newProposals[pid].id)).sub(26, 40);
                 const additionInfo = await daoContract._melodyAdditionProposals(newProposals[pid].id);
                 info = additionInfo.info;
-                newProposals[pid].requiedVotes = ethers.utils.formatUnits(totalStaked.div(3).mul(2).add(1), 18);
                 break;
 
             case 3:
@@ -150,7 +148,6 @@ async function getActiveProposals() {
                 newProposals[pid].address = (await daoContract._melodyRemovalProposals(newProposals[pid].id)).substr(26, 40);
                 const removalInfo = await daoContract._melodyRemovalProposals(newProposals[pid].id);
                 info = removalInfo.info;
-                newProposals[pid].requiedVotes = ethers.utils.formatUnits(totalStaked.div(2).add(1), 18);
                 break;
 
             case 4:
@@ -160,7 +157,6 @@ async function getActiveProposals() {
                 newProposals[pid].address = (await daoContract._stakeUpgradeProposals(newProposals[pid].id)).substr(26, 40);
                 const upgradeInfo = await daoContract._stakeUpgradeProposals(newProposals[pid].id);
                 info = upgradeInfo.info;
-                newProposals[pid].requiedVotes = ethers.utils.formatUnits(totalStaked.div(5).mul(4).add(1), 18);
                 break;
 
             case 5:
@@ -170,11 +166,13 @@ async function getActiveProposals() {
                 newProposals[pid].address = (await daoContract._daoUpgradeProposals(newProposals[pid].id)).substr(26, 40);
                 const daoInfo = await daoContract._daoUpgradeProposals(newProposals[pid].id);
                 info = daoInfo.info;
-                newProposals[pid].requiedVotes = ethers.utils.formatUnits(totalStaked.div(5).mul(4).add(1), 18);
                 break;
         }
 
+        // set requiedVotes threshold
         threshold = threshold.add(1);
+        newProposals[pid].requiedVotes = threshold;
+
         newProposals[pid].info = info;
         if (/[^(a-zA-Z\d\s\/:.!@)]/.test(newProposals[pid].info)) {
             newProposals[pid].info = "Invalid info string.";
@@ -210,7 +208,6 @@ async function getActiveProposals() {
             }
             v++;
         }
-
         newProposals[pid].votes = ethers.BigNumber.from(0);
         for (let voter of newProposals[pid].voters) {
             newProposals[pid].votes = newProposals[pid].votes.add(ethers.BigNumber.from(
@@ -219,7 +216,6 @@ async function getActiveProposals() {
         }
 
         newProposals[pid].completable = newProposals[pid].votes.gt(threshold);
-        newProposals[pid].votes = formatAtomic(newProposals[pid].votes.toString(), 0);
         newProposals[pid].votePercent = (newProposals[pid].votes / newProposals[pid].requiedVotes * 100).toFixed(2);
     }
 
