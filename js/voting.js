@@ -1,8 +1,12 @@
 async function proposalsCount() {
     let count = 0;
-
     for (let proposal of activeProposals) {
-        if (proposal.type) {
+        if (!proposal) {
+            continue;
+        } else if (proposal.meta.completed === true) {
+            continue;
+        } else if (typeof proposal.type === "string") {
+            // increase active proposal count
             count++;
         }
     }
@@ -25,7 +29,7 @@ async function getNewProposalEvents() {
         address: contractData.dao,
         fromBlock: lastBlock,
         toBlock: 'latest',
-        topics: []
+        topics: [ ]
     }
     return await daoContract.queryFilter(params);
 }
@@ -33,9 +37,11 @@ async function getNewProposalEvents() {
 async function vote(id) {
     try {
         await daoContract.addVote(id);
+        successAlert("Vote Submitted!");
         return true;
     } catch (err) {
         console.log(err);
+        errorAlert("Vote Failed!");
         return false;
     }
 }
@@ -43,15 +49,19 @@ async function vote(id) {
 async function unvote(id) {
     try {
         await daoContract.removeVote(id);
+        successAlert("Vote Removed!");
         return true;
     } catch (err) {
         console.log(err);
+        errorAlert("Vote Failed!");
         return false;
     }
 }
 
-async function complete(proposal) {
+async function complete(id) {
+    const proposal = await activeProposals.find(p => p.id === id);
     await daoContract.completeProposal(proposal.id, proposal.voters, overrideGasLimit);
+    successAlert("Completion Requested!");
 }
 
 async function proposeFund(amount, info) {
@@ -92,128 +102,126 @@ async function proposeFund(amount, info) {
 }
 
 async function getActiveProposals() {
-    let proposals = await getNewProposalEvents();
+    // let proposals = await getNewProposalEvents();
+
+    let proposalFilter = await daoContract.filters.ProposalVoteAdded();
+    const proposals = await daoContract.queryFilter(proposalFilter);
     const totalStaked = await stakeContract.totalStaked();
 
-    let p = 0;
-    while (p < proposals.length) {
-        let proposal = proposals[p];
-        proposals[p] = {
-            id: parseInt(proposal.topics[1]),
-            blockCreated: parseInt(proposal.blockNumber)
+    let newProposals = [];
+
+    for (let proposal of proposals) {
+        const pid = parseInt(proposal.topics[1]);
+        const blockCreated = parseInt(proposal.blockNumber);
+        newProposals[pid] = {
+            id: pid,
+            blockCreated
         };
-
-        let meta = await daoContract.proposals(p);
-
-        // not working
-        // if (meta.completed || ((meta.submitted.add(2629800)) < Math.floor((+new Date) / 1000))) {
-        //     proposals = proposals.splice(1);
-        //     console.log("splice");
-        //     continue;
-        // }
+        newProposals[pid].meta = await daoContract.proposals(pid);
 
         let threshold = ethers.BigNumber.from(await stakeContract.totalStaked());
         let info;
         // The names of these mappings should've had their _ removed when they were made public.
-        switch (meta.pType) {
+        switch (newProposals[pid].meta.pType) {
             case 1:
-                proposals[p].type = "Fund";
+                newProposals[pid].type = "Fund";
                 threshold = threshold.div(2);
-                const fundInfo = await daoContract._fundProposals(proposals[p].id);
-                proposals[p].amount = ethers.utils.formatUnits(fundInfo.amount, 18);
-                proposals[p].address = fundInfo.destination;
-                proposals[p].requiedVotes = ethers.utils.formatUnits(totalStaked.div(2).add(1), 18);
+                const fundInfo = await daoContract._fundProposals(newProposals[pid].id);
+                newProposals[pid].amount = ethers.utils.formatUnits(fundInfo.amount, 18);
+                newProposals[pid].address = fundInfo.destination;
+                newProposals[pid].requiedVotes = ethers.utils.formatUnits(totalStaked.div(2).add(1), 18);
                 info = fundInfo.info;
                 break;
 
             case 2:
-                proposals[p].type = "ModuleAddition";
+                newProposals[pid].type = "ModuleAddition";
                 threshold = threshold.div(3).times(2);
-                proposals[p].amount = ethers.utils.formatUnits(0, 18);
-                proposals[p].address = (await daoContract._melodyAdditionProposals(proposals[p].id)).sub(26, 40);
-                const additionInfo = await daoContract._melodyAdditionProposals(proposals[p].id);
+                newProposals[pid].amount = ethers.utils.formatUnits(0, 18);
+                newProposals[pid].address = (await daoContract._melodyAdditionProposals(newProposals[pid].id)).sub(26, 40);
+                const additionInfo = await daoContract._melodyAdditionProposals(newProposals[pid].id);
                 info = additionInfo.info;
-                proposals[p].requiedVotes = ethers.utils.formatUnits(totalStaked.div(3).mul(2).add(1), 18);
+                newProposals[pid].requiedVotes = ethers.utils.formatUnits(totalStaked.div(3).mul(2).add(1), 18);
                 break;
 
             case 3:
-                proposals[p].type = "ModuleRemoval";
+                newProposals[pid].type = "ModuleRemoval";
                 threshold = threshold.div(2);
-                proposals[p].amount = ethers.utils.formatUnits(0, 18);
-                proposals[p].address = (await daoContract._melodyRemovalProposals(proposals[p].id)).substr(26, 40);
-                const removalInfo = await daoContract._melodyRemovalProposals(proposals[p].id);
+                newProposals[pid].amount = ethers.utils.formatUnits(0, 18);
+                newProposals[pid].address = (await daoContract._melodyRemovalProposals(newProposals[pid].id)).substr(26, 40);
+                const removalInfo = await daoContract._melodyRemovalProposals(newProposals[pid].id);
                 info = removalInfo.info;
-                proposals[p].requiedVotes = ethers.utils.formatUnits(totalStaked.div(2).add(1), 18);
+                newProposals[pid].requiedVotes = ethers.utils.formatUnits(totalStaked.div(2).add(1), 18);
                 break;
 
             case 4:
-                proposals[p].type = "StakeUpgrade";
+                newProposals[pid].type = "StakeUpgrade";
                 threshold = threshold.div(5).times(4);
-                proposals[p].amount = ethers.utils.formatUnits(0, 18);
-                proposals[p].address = (await daoContract._stakeUpgradeProposals(proposals[p].id)).substr(26, 40);
-                const upgradeInfo = await daoContract._stakeUpgradeProposals(proposals[p].id);
+                newProposals[pid].amount = ethers.utils.formatUnits(0, 18);
+                newProposals[pid].address = (await daoContract._stakeUpgradeProposals(newProposals[pid].id)).substr(26, 40);
+                const upgradeInfo = await daoContract._stakeUpgradeProposals(newProposals[pid].id);
                 info = upgradeInfo.info;
-                proposals[p].requiedVotes = ethers.utils.formatUnits(totalStaked.div(5).mul(4).add(1), 18);
+                newProposals[pid].requiedVotes = ethers.utils.formatUnits(totalStaked.div(5).mul(4).add(1), 18);
                 break;
 
             case 5:
-                proposals[p].type = "DAOUpgrade";
+                newProposals[pid].type = "DAOUpgrade";
                 threshold = threshold.div(5).times(4);
-                proposals[p].amount = ethers.utils.formatUnits(0, 18);
-                proposals[p].address = (await daoContract._daoUpgradeProposals(proposals[p].id)).substr(26, 40);
-                const daoInfo = await daoContract._daoUpgradeProposals(proposals[p].id);
+                newProposals[pid].amount = ethers.utils.formatUnits(0, 18);
+                newProposals[pid].address = (await daoContract._daoUpgradeProposals(newProposals[pid].id)).substr(26, 40);
+                const daoInfo = await daoContract._daoUpgradeProposals(newProposals[pid].id);
                 info = daoInfo.info;
-                proposals[p].requiedVotes = ethers.utils.formatUnits(totalStaked.div(5).mul(4).add(1), 18);
+                newProposals[pid].requiedVotes = ethers.utils.formatUnits(totalStaked.div(5).mul(4).add(1), 18);
                 break;
         }
 
         threshold = threshold.add(1);
-        proposals[p].info = info;
-        if (/[^(a-zA-Z\d\s\/:.!@)]/.test(proposals[p].info)) {
-            proposals[p].info = "Invalid info string.";
+        newProposals[pid].info = info;
+        if (/[^(a-zA-Z\d\s\/:.!@)]/.test(newProposals[pid].info)) {
+            newProposals[pid].info = "Invalid info string.";
         }
 
-        proposals[p].voters = [];
-        let addedFilter = await daoContract.filters.ProposalVoteAdded(proposals[p].id);
+        newProposals[pid].voters = [];
+        let addedFilter = await daoContract.filters.ProposalVoteAdded(newProposals[pid].id);
         let added = await daoContract.queryFilter(addedFilter);
-        let removedFilter = await daoContract.filters.ProposalVoteRemoved(proposals[p].id);
+        let removedFilter = await daoContract.filters.ProposalVoteRemoved(newProposals[pid].id);
         let removed = await daoContract.queryFilter(removedFilter);
         let addedBlock = {};
         let removedBlock = {};
 
         for (let event of added) {
             const voter = "0x" + event.topics[2].substr(26, 40);
-            proposals[p].voters.push(voter);
+            newProposals[pid].voters.push(voter);
             addedBlock[voter] = parseInt(event.blockNumber);
         }
         for (let event of removed) {
             const voter = "0x" + event.topics[2].substr(26, 40);
             removedBlock[voter] = parseInt(event.blockNumber);
         }
+        newProposals[pid].voters = Array.from(new Set(newProposals[pid].voters));
 
-        proposals[p].voters = Array.from(new Set(proposals[p].voters));
         let v = 0;
-        while (v < proposals[p].voters.length) {
-            if (removedBlock.hasOwnProperty(proposals[p].voters[v])) {
+        while (v < newProposals[pid].voters.length) {
+            if (removedBlock.hasOwnProperty(newProposals[pid].voters[v])) {
                 // Has an edge case based on transaction order in block
-                if (removedBlock[proposals[p].voters[v]] >= addedBlock[proposals[p].voters[v]]) {
-                    proposals[p].voters.splice(v, 1);
+                if (removedBlock[newProposals[pid].voters[v]] >= addedBlock[newProposals[pid].voters[v]]) {
+                    newProposals[pid].voters.splice(v, 1);
                     continue;
                 }
             }
             v++;
         }
-        proposals[p].votes = ethers.BigNumber.from(0);
-        for (let voter of proposals[p].voters) {
-            proposals[p].votes = proposals[p].votes.add(ethers.BigNumber.from(
+
+        newProposals[pid].votes = ethers.BigNumber.from(0);
+        for (let voter of newProposals[pid].voters) {
+            newProposals[pid].votes = newProposals[pid].votes.add(ethers.BigNumber.from(
                 await stakeContract.staked(voter))
             );
         }
-        proposals[p].completable = proposals[p].votes.gt(threshold);
-        proposals[p].votes = formatAtomic(proposals[p].votes.toString(), 0);
-        proposals[p].votePercent = (proposals[p].votes / proposals[p].requiedVotes * 100).toFixed(2);
-        p++;
+
+        newProposals[pid].completable = newProposals[pid].votes.gt(threshold);
+        newProposals[pid].votes = formatAtomic(newProposals[pid].votes.toString(), 0);
+        newProposals[pid].votePercent = (newProposals[pid].votes / newProposals[pid].requiedVotes * 100).toFixed(2);
     }
 
-    return proposals;
+    return newProposals;
 }
