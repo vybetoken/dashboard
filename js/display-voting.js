@@ -69,7 +69,10 @@ async function buildProposalRow(proposal) {
 
     // only display proposal actions relevant to user
     let buttons = ``;
-    let progress = ``;
+    let progress = `<div class="progress">
+                <div class="progress-bar bg-success" role="progressbar" style="width: ${proposal.votePercent}%" aria-valuenow="${proposal.votePercent}" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>`;
+
     if (proposal.meta.completed) {
         progress = `<div>Completed</div>`;
 
@@ -93,11 +96,6 @@ async function buildProposalRow(proposal) {
         <div class="btn-group" role="group" aria-label="Vote Buttons">
             <button type="button" class="btn btn-gradient-success btn-rounded mr-1" onclick="vote(${proposal.id})" id="approve-${proposal.id}">Approve</button>
         </div>`;
-
-        // show progress
-        progress = `<div class="progress">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: ${proposal.votePercent}%" aria-valuenow="${proposal.votePercent}" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>`;
 
     }
 
