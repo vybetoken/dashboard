@@ -58,13 +58,20 @@ async function displayProposals() {
 }
 
 async function buildProposalRow(proposal) {
-    const vybeValueFormatted = await formatValue(proposal.amount);
     const firstPartAddress = proposal.address.substring(0, 6);
     const lastPartAddress = proposal.address.slice(-4);
     const formattedAddress = firstPartAddress + `...` + lastPartAddress;
+    
     let info = proposal.info;
     if (await isValidURL(info)) {
         info = `<a href="${info}">${info}</a>`;
+    }
+
+    let vybeValueFormatted;
+    if (proposal.amount.isZero()) {
+        vybeValueFormatted = `N/A`;
+    } else {
+        vybeValueFormatted = `${await formatValue(ethers.utils.formatUnits(proposal.amount, 18))} VYBE`;
     }
 
     // only display proposal actions relevant to user
@@ -104,7 +111,7 @@ async function buildProposalRow(proposal) {
       <td><a href="${contractData.explorer}/address/${proposal.address}">${formattedAddress}</a></td>
       <td>${proposal.type}</td>
       <td>${info}</td>
-      <td id="proposal-value-${proposal.id}">${vybeValueFormatted} VYBE</td>
+      <td id="proposal-value-${proposal.id}">${vybeValueFormatted}</td>
       <td id="progress-${proposal.id}">${progress}</td>
       <td>${buttons}</td>
     </tr>`;
@@ -121,12 +128,16 @@ async function addTooltips() {
             continue;
         }
 
-        const ethValue = await formatValue(proposal.amount * vybeETH);
-        const usdValue = await formatUSD(proposal.amount * vybeUSD);
-        // create tooltip for proposal value
-        tippy(`#proposal-value-${proposal.id}`, {
-            content: `${ethValue} ETH / ${usdValue}`,
-        });
+        if (proposal.amount.isZero() === false) {
+            const formattedVybe = ethers.utils.formatUnits(proposal.amount, 18);
+            const ethValue = await formatValue(formattedVybe * vybeETH);
+            const usdValue = await formatUSD(formattedVybe * vybeUSD);
+
+            // create tooltip for proposal value
+            tippy(`#proposal-value-${proposal.id}`, {
+                content: `${ethValue} ETH / ${usdValue}`,
+            });
+        }
 
         // create tooltip for vote progress
         const currentVotesFormatted = await formatValue(ethers.utils.formatUnits(proposal.votes, 18));
