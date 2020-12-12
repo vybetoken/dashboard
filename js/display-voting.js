@@ -18,10 +18,12 @@ async function displayProposals() {
     document.getElementById("proposals-loading").style.display = "block";
     // fetch active proposals
     activeProposals = await getActiveProposals();
+
     // process active proposals
     if (await proposalsCount() !== 0) {
 
-        let displayTable = ``;
+        let activeTable = ``;
+        let inactiveTable = ``;
 
         for (let proposal of activeProposals) {
             // filter out events that are improperly formatted or outdated
@@ -29,31 +31,38 @@ async function displayProposals() {
                 continue;
             } else if (typeof proposal.type !== "string") {
                 continue;
-            } else if (proposal.meta.completed === true) {
-                continue;
             }
-            console.log(`loading ${proposal.type} with id: ${proposal.id}`);
 
             let displayRow = await buildProposalRow(proposal);
             const ethValue = await formatValue(proposal.amount * vybeETH);
             const usdValue = await formatUSD(proposal.amount * vybeUSD);
-            displayTable = displayTable + displayRow;
-            document.getElementById("proposals-table-body").innerHTML = displayTable;
 
-            // create tooltip for proposal value
-            tippy(`#proposal-value-${proposal.id}`, {
-                content: `${ethValue} ETH / ${usdValue}`,
-            });
+            if (proposal.meta.completed) {
+                inactiveTable = inactiveTable + displayRow;
 
-            // create tooltip for vote progress
-            const currentVotesFormatted = await formatValue(proposal.votes);
-            const requiredVotesFormatted = await formatValue(proposal.requiedVotes);
-            tippy(`#progress-${proposal.id}`, {
-                allowHTML: true,
-                content: `Current Vote: ${currentVotesFormatted} (${proposal.votePercent}%)<br>Required Vote: ${requiredVotesFormatted}`,
-            });
+                // set table contents
+                document.getElementById("proposals-table-body").innerHTML = activeTable + inactiveTable;
+            } else {
+                activeTable = activeTable + displayRow;
 
+                // set table contents
+                document.getElementById("proposals-table-body").innerHTML = activeTable + inactiveTable;
+
+                // create tooltip for proposal value
+                tippy(`#proposal-value-${proposal.id}`, {
+                    content: `${ethValue} ETH / ${usdValue}`,
+                });
+
+                // create tooltip for vote progress
+                const currentVotesFormatted = await formatValue(proposal.votes);
+                const requiredVotesFormatted = await formatValue(proposal.requiedVotes);
+                tippy(`#progress-${proposal.id}`, {
+                    allowHTML: true,
+                    content: `Current Vote: ${currentVotesFormatted} (${proposal.votePercent}%)<br>Required Vote: ${requiredVotesFormatted}`,
+                });
+            }
         }
+
         // hide loading and make table visible
         document.getElementById("proposals-loading").style.display = "none";
         document.getElementById("proposals-table").style.display = "block";
@@ -62,7 +71,6 @@ async function displayProposals() {
         // end loading and notify the user that there aren't any active proposals
         document.getElementById("proposals-loading").style.display = "none";
         document.getElementById("proposals-empty").style.display = "block";
-
     }
 }
 
@@ -77,22 +85,33 @@ async function buildProposalRow(proposal) {
     }
 
     // only display proposal actions relevant to user
-    let buttons;
-    if (proposal.completable) {
+    let buttons = ``;
+    let progress = ``;
+    if (proposal.meta.completed) {
+        progress = `Completed`;
+    } else if (proposal.completable) {
+        // show complete proposal button
         buttons = `
         <div class="btn-group" role="group" aria-label="Vote Buttons">
             <button type="button" class="btn btn-gradient-success btn-rounded mr-1" onclick="complete(${proposal.id})" id="complete-${proposal.id}">Complete</button>
         </div>`;
     } else if (proposal.voters.includes(userAddress)) {
+        // show unvote button
         buttons = `
         <div class="btn-group" role="group" aria-label="Vote Buttons">
             <button type="button" class="btn btn-gradient-danger btn-rounded" onclick="unvote(${proposal.id})" id="refuse-${proposal.id}">Refuse</button>
         </div>`;
     } else {
+        // show vote button
         buttons = `
         <div class="btn-group" role="group" aria-label="Vote Buttons">
             <button type="button" class="btn btn-gradient-success btn-rounded mr-1" onclick="vote(${proposal.id})" id="approve-${proposal.id}">Approve</button>
         </div>`;
+
+        // show progress
+        progress = `<div class="progress" id="progress-${proposal.id}">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: ${proposal.votePercent}%" aria-valuenow="${proposal.votePercent}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>`;
     }
 
     // return complete proposal row
@@ -102,9 +121,7 @@ async function buildProposalRow(proposal) {
       <td>${info}</td>
       <td id="proposal-value-${proposal.id}">${vybeValueFormatted} VYBE</td>
       <td>
-        <div class="progress" id="progress-${proposal.id}">
-            <div class="progress-bar bg-success" role="progressbar" style="width: ${proposal.votePercent}%" aria-valuenow="${proposal.votePercent}" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
+        ${progress}
       </td>
       <td>
         ${buttons}
