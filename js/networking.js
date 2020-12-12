@@ -47,17 +47,21 @@ async function getVybeContractAddresses() {
 		stake: "0x1Bcc32Ac1C994CE7e9526FbaF95f37AbC0B2EC39",
 		stakeABI: STAKE_ABI,
         dao: "0x9E6a97d3a65BFd1dDC6D15025f985eBc9c8f2b0A",
-        daoABI: DAO_ABI
+        daoABI: DAO_ABI,
+        uniswap: "",
+        uniABI: VYBE_ABI
 	}
 
 	const GOERLI_TEST_NET = {
         explorer: "https://goerli.etherscan.io",
-		vybe: "0x0c272eF49bB983bDbD86DaC1c89759C9C331A308",
+		vybe: "0x7BBeecded0D871F99f81D8Eec09483725316e0b8",
 		vybeABI: VYBE_ABI,
-		stake: "0x21a44231D24813F881c873C141aE6e157d7Ec14F",
+		stake: "0x9728c3bCd88A70b0C2c20D44A9ECA898293021C8",
 		stakeABI: STAKE_ABI,
-        dao: "0x6413fBB36C4990FDAEbf3c315b2f5140c828707F",
-        daoABI: DAO_ABI
+        dao: "0x7Cb8eA6Bd14F35e89B1f91D52189159aE5808C98",
+        daoABI: DAO_ABI,
+        uniswap: "0x87370c1333f96272afda35aac0deeb68ad69b809",
+        uniABI: VYBE_ABI
 	}
 
 	const networkInfo = await provider.getNetwork();

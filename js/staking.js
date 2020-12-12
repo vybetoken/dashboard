@@ -67,7 +67,7 @@ async function increaseStake(amount) {
 			await vybeContract.approve(contractData.stake, UINT256_MAX);
 		}
 
-		await stakeContract.increaseStake(amount);
+		await stakeContract.increaseStake(amount, overrideGasLimit);
 		successAlert("Stake Increased!");
 		return true;
 
@@ -84,7 +84,7 @@ async function decreaseStake(amount) {
 	}
 
 	try {
-		await stakeContract.decreaseStake(amount);
+		await stakeContract.decreaseStake(amount, overrideGasLimit);
 		successAlert("Stake Decreased!");
 		return true;
 

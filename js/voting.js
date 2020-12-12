@@ -134,10 +134,10 @@ async function getActiveProposals() {
 
             case 2:
                 newProposals[pid].type = "ModuleAddition";
-                threshold = threshold.div(3).times(2);
+                threshold = threshold.div(3).mul(2);
                 newProposals[pid].amount = ethers.utils.formatUnits(0, 18);
-                newProposals[pid].address = (await daoContract._melodyAdditionProposals(newProposals[pid].id)).sub(26, 40);
                 const additionInfo = await daoContract._melodyAdditionProposals(newProposals[pid].id);
+                newProposals[pid].address = additionInfo.module;
                 info = additionInfo.info;
                 break;
 
@@ -145,26 +145,27 @@ async function getActiveProposals() {
                 newProposals[pid].type = "ModuleRemoval";
                 threshold = threshold.div(2);
                 newProposals[pid].amount = ethers.utils.formatUnits(0, 18);
-                newProposals[pid].address = (await daoContract._melodyRemovalProposals(newProposals[pid].id)).substr(26, 40);
                 const removalInfo = await daoContract._melodyRemovalProposals(newProposals[pid].id);
+                newProposals[pid].address = removalInfo.module;
                 info = removalInfo.info;
                 break;
 
             case 4:
                 newProposals[pid].type = "StakeUpgrade";
-                threshold = threshold.div(5).times(4);
+                threshold = threshold.div(5).mul(4);
+
                 newProposals[pid].amount = ethers.utils.formatUnits(0, 18);
-                newProposals[pid].address = (await daoContract._stakeUpgradeProposals(newProposals[pid].id)).substr(26, 40);
                 const upgradeInfo = await daoContract._stakeUpgradeProposals(newProposals[pid].id);
+                newProposals[pid].address = upgradeInfo.newStake;
                 info = upgradeInfo.info;
                 break;
 
             case 5:
                 newProposals[pid].type = "DAOUpgrade";
-                threshold = threshold.div(5).times(4);
+                threshold = threshold.div(5).mul(4);
                 newProposals[pid].amount = ethers.utils.formatUnits(0, 18);
-                newProposals[pid].address = (await daoContract._daoUpgradeProposals(newProposals[pid].id)).substr(26, 40);
                 const daoInfo = await daoContract._daoUpgradeProposals(newProposals[pid].id);
+                newProposals[pid].address = daoInfo.newDAO;
                 info = daoInfo.info;
                 break;
         }
