@@ -96,7 +96,7 @@ async function decreaseStake(amount) {
 
 async function claimRewards() {
 	try {
-		await stakeContract.claimRewards();
+		await stakeContract.claimRewards(overrideGasLimit);
 		refreshStats();
 		successAlert("Rewards Claimed!");
 		return true;

@@ -59,7 +59,7 @@ async function unvote(id) {
 }
 
 async function complete(id) {
-    const proposal = await activeProposals.find(p => p.id === id);
+    const proposal = activeProposals.filter(p => p.id === id)[0];
     await daoContract.completeProposal(proposal.id, proposal.voters, overrideGasLimit);
     successAlert("Completion Requested!");
 }

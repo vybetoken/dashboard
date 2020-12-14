@@ -20,7 +20,7 @@ async function displayProposals() {
     activeProposals = await getActiveProposals();
 
     // process active proposals
-    if (await proposalsCount() !== 0) {
+    if (activeProposals.length !== 0) {
 
         let activeTable = ``;
         let inactiveTable = ``;
@@ -36,7 +36,7 @@ async function displayProposals() {
             let displayRow = await buildProposalRow(proposal);
 
             if (proposal.meta.completed) {
-                inactiveTable = inactiveTable + displayRow;
+                inactiveTable = displayRow + inactiveTable;
             } else {
                 activeTable = activeTable + displayRow;
             }
@@ -61,7 +61,7 @@ async function buildProposalRow(proposal) {
     const firstPartAddress = proposal.address.substring(0, 6);
     const lastPartAddress = proposal.address.slice(-4);
     const formattedAddress = firstPartAddress + `...` + lastPartAddress;
-    
+
     let info = proposal.info;
     if (await isValidURL(info)) {
         info = `<a href="${info}">${info}</a>`;
