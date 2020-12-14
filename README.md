@@ -1,4 +1,4 @@
-# dashboard
+# portal
 
 1. clone repo
 2. if you are missing homebrew and nodejs, install homebrew here: https://brew.sh
