@@ -5,6 +5,7 @@ let userAddress;
 let vybeUSD;
 let vybeETH;
 let vybeContract;
+let uniContract;
 let stakeContract;
 let daoContract;
 let lastBlock;
@@ -26,6 +27,19 @@ async function refreshStats() {
 			displayVybeRewardsBalance();
 		}
 	}
+
+	if (typeof displayUserUNIBalance === "function") {
+		// user balance
+		displayUserUNIBalance();
+		// user stake
+		displayUNIStakeBalance();
+		// network stats
+		displayUNINetworkStake();
+		if (isStaking) {
+			// rewards
+			displayVybeRewardsBalance();
+		}
+	}
 }
 
 async function init() {
@@ -39,6 +53,7 @@ async function init() {
 	userAddress = await signer.getAddress();
 	contractData = await getVybeContractAddresses();
 	vybeContract = new ethers.Contract(contractData.vybe, contractData.vybeABI, signer);
+	uniContract = new ethers.Contract(contractData.uni, contractData.uniABI, signer);
 	stakeContract = new ethers.Contract(contractData.stake, contractData.stakeABI, signer);
 	daoContract = new ethers.Contract(contractData.dao, contractData.daoABI, signer);
 	lastBlock = await provider.getBlockNumber() || 0;

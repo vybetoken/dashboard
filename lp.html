@@ -54,7 +54,7 @@ SOFTWARE.
             <div class="navbar-menu-wrapper d-flex align-items-stretch">
                 <ul class="navbar-nav navbar-nav-right">
                     <li class="nav-item">
-                        <div><p class="mb-1 text-black" id="vybe-network-stake"></p></div>
+                        <div><p class="mb-1 text-black" id="uni-network-stake"></p></div>
                     </li>
                 </ul>
             </div>
@@ -87,7 +87,7 @@ SOFTWARE.
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="page-header">
-                        <h3 class="page-title"> Staking </h3>
+                        <h3 class="page-title"> UNI-V2 Staking </h3>
                     </div>
                     <div class="row">
                         <div class="col-md-4 stretch-card grid-margin">
@@ -95,9 +95,7 @@ SOFTWARE.
                                 <div class="card-body">
                                     <img src="img/circle.svg" class="card-img-absolute" alt="circle-image" />
                                     <h4 class="font-weight-normal mb-3">Current Balance<i class="mdi mdi-chart-line mdi-24px float-right"></i></h4>
-                                    <h2 id="user-balance-vybe" class="mb-5">0.00</h2>
-                                    <h6 id="user-balance-usd" class="card-text">$0.00</h6>
-                                    <h6 id="user-balance-eth" class="card-text">0.00</h6>
+                                    <h2 id="user-balance-uni" class="mb-5">0.00</h2>
                                     <button type="button" class="btn btn-gradient-light btn-rounded btn-fw btn-mobile" onclick="openStakeModal(true)">Stake</button>
                                 </div>
                             </div>
@@ -107,9 +105,7 @@ SOFTWARE.
                                 <div class="card-body">
                                     <img src="img/circle.svg" class="card-img-absolute" alt="circle-image" />
                                     <h4 class="font-weight-normal mb-3">Staked Balance<i class="mdi mdi-bookmark-outline mdi-24px float-right"></i></h4>
-                                    <h2 id="stake-balance-vybe" class="mb-5">0.00</h2>
-                                    <h6 id="stake-balance-usd" class="card-text">$0.00</h6>
-                                    <h6 id="stake-balance-eth" class="card-text">0.00</h6>
+                                    <h2 id="stake-balance-uni" class="mb-5">0.00</h2>
                                     <button type="button" class="btn btn-gradient-light btn-rounded btn-fw btn-mobile" onclick="openStakeModal(false)">Withdraw</button>
                                 </div>
                             </div>
@@ -120,8 +116,6 @@ SOFTWARE.
                                     <img src="img/circle.svg" class="card-img-absolute" alt="circle-image" />
                                     <h4 class="font-weight-normal mb-3">Available Rewards<i class="mdi mdi-diamond mdi-24px float-right"></i></h4>
                                     <h2 id="vybe-rewards-balance" class="mb-5">0.00</h2>
-                                    <h6 id="vybe-rewards-balance-usd" class="card-text">$0.00</h6>
-                                    <h6 id="vybe-rewards-balance-eth" class="card-text">0.00</h6>
                                     <button type="button" class="btn btn-gradient-light btn-rounded btn-fw btn-mobile" onclick="claimRewards()">Claim</button>
                                 </div>
                             </div>
@@ -132,7 +126,7 @@ SOFTWARE.
                         <div class="col-md-4 grid-margin stretch-card action-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Deposit Vybe Stake</h4>
+                                    <h4 class="card-title">Deposit UNI-V2 Stake</h4>
                                     <button type="button" class="btn btn-gradient-danger btn-rounded btn-fw" onclick="openStakeModal(true)">Stake</button>
                                 </div>
                             </div>
@@ -141,7 +135,7 @@ SOFTWARE.
                         <div class="col-md-4 grid-margin stretch-card action-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Withdraw Vybe Stake</h4>
+                                    <h4 class="card-title">Withdraw UNI-V2 Stake</h4>
                                     <button type="button" class="btn btn-gradient-primary btn-rounded btn-fw" onclick="openStakeModal(false)">Withdraw</button>
                                 </div>
                             </div>
@@ -171,11 +165,11 @@ SOFTWARE.
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
     <script src="js/currency.min.js"></script>
-    <script src="js/staking-modal.js"></script>
+    <script src="js/lp-staking-modal.js"></script>
     <script src="js/networking.js"></script>
     <script src="js/util.js"></script>
-    <script src="js/staking.js"></script>
-    <script src="js/display-staking.js"></script>
+    <script src="js/lp-staking.js"></script>
+    <script src="js/lp-display-staking.js"></script>
     <script src="js/main.js"></script>
 
     <!-- The Modal -->
