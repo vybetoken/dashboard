@@ -46,7 +46,7 @@ async function displayVybeStakeBalance() {
 // USER REWARDS BALANCE
 async function displayVybeRewardsBalance() {
 	const vybeRewardsBalance = await getCurrentRewardsAmount();
-    vybeRewardsBalanceElement.innerHTML = await formatValue(vybeRewardsBalance);
+	vybeRewardsBalanceElement.innerHTML = await formatValue(vybeRewardsBalance);
 
     if (vybeUSD && vybeETH) {
         const usdRewardsBalance = await formatUSD(vybeRewardsBalance * vybeUSD);

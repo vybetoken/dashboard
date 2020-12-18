@@ -63,6 +63,7 @@ async function increaseStake(amount) {
 
 	} catch (err) {
 		console.log(err);
+		errorAlert("Stake increase failed!");
 		return false
 	}
 }
@@ -80,6 +81,7 @@ async function decreaseStake(amount) {
 
 	} catch (err) {
 		console.log(err);
+		errorAlert("Stake decrease failed!");
 		return false
 	}
 }
@@ -93,6 +95,7 @@ async function claimRewards() {
 
 	} catch (e) {
 		console.log(`error: `, e);
+		errorAlert("Reward claim failed!");
 		return false;
 	}
 }

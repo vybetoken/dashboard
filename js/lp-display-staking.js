@@ -25,8 +25,8 @@ async function displayUNIStakeBalance() {
 
 // USER REWARDS BALANCE
 async function displayVybeRewardsBalance() {
-	const vybeRewardsBalance = await getCurrentRewardsAmount();
-    vybeRewardsBalanceElement.innerHTML = await formatValue(vybeRewardsBalance);
+	// const vybeRewardsBalance = await getCurrentRewardsAmount();
+    vybeRewardsBalanceElement.innerHTML = `-`;//await formatValue(vybeRewardsBalance);
 }
 
 // NETWORK STATS

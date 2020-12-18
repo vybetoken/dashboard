@@ -60,7 +60,7 @@ async function getVybeContractAddresses() {
         explorer: "https://goerli.etherscan.io",
 		vybe: "0xbd380Ccf55E21Be87fb1f0341131884287C62dD7",
 		vybeABI: VYBE_ABI,
-		stake: "0x2903B66607380D9FAE08485e4EF69FAa6663233b",
+		stake: "0xd51cC6430868d187Ec262aCB34789E9Bc535D2eD",
 		stakeABI: STAKE_ABI,
         dao: "0xdb56cD2359bb732a9189B8f3726C81B995BC6d01",
         daoABI: DAO_ABI,
