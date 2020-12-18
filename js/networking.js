@@ -47,7 +47,7 @@ async function getVybeContractAddresses() {
         explorer: "https://etherscan.io",
 		vybe: "0x3A1c1d1c06bE03cDDC4d3332F7C20e1B37c97CE9",
 		vybeABI: VYBE_ABI,
-		stake: "0x1Bcc32Ac1C994CE7e9526FbaF95f37AbC0B2EC39",
+		stake: "0x7A2cCBe1099960E7790b835D2fDEB1aE5EdfB143",
 		stakeABI: STAKE_ABI,
         dao: "0x9E6a97d3a65BFd1dDC6D15025f985eBc9c8f2b0A",
         daoABI: DAO_ABI,
