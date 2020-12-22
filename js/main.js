@@ -54,8 +54,8 @@ async function init() {
 	contractData = await getVybeContractAddresses();
 	vybeContract = new ethers.Contract(contractData.vybe, contractData.vybeABI, signer);
 	uniContract = new ethers.Contract(contractData.uni, contractData.uniABI, signer);
-	stakeContract = new ethers.Contract(contractData.stake, contractData.stakeABI, signer);
-	daoContract = new ethers.Contract(contractData.dao, contractData.daoABI, signer);
+	stakeContract = new ethers.Contract(await vybeContract.owner(), contractData.stakeABI, signer);
+	daoContract = new ethers.Contract(await stakeContract.owner(), contractData.daoABI, signer);
 	lastBlock = await provider.getBlockNumber() || 0;
 
 	// attempt to load staking

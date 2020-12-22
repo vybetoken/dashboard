@@ -50,11 +50,11 @@ async function increaseStake(amount) {
 		if (
 			(ethers.BigNumber.from(amount)).gt(
 				ethers.BigNumber.from(
-					await uniContract.allowance(userAddress, contractData.stake)
+					await uniContract.allowance(userAddress, stakeContract.address)
 				)
 			)
 		) {
-			await uniContract.approve(contractData.stake, UINT256_MAX);
+			await uniContract.approve(stakeContract.address, UINT256_MAX);
 		}
 
 		await stakeContract.increaseLpStake(amount, overrideGasLimit);

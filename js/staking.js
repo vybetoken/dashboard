@@ -69,11 +69,11 @@ async function increaseStake(amount) {
 		if (
 			(ethers.BigNumber.from(amount)).gt(
 				ethers.BigNumber.from(
-					await vybeContract.allowance(userAddress, contractData.stake)
+					await vybeContract.allowance(userAddress, stakeContract.address)
 				)
 			)
 		) {
-			await vybeContract.approve(contractData.stake, UINT256_MAX);
+			await vybeContract.approve(stakeContract.address, UINT256_MAX);
 		}
 
 		await stakeContract.increaseStake(amount, overrideGasLimit);
