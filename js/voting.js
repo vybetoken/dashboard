@@ -102,8 +102,6 @@ async function proposeFund(amount, info) {
 }
 
 async function getActiveProposals() {
-    // let proposals = await getNewProposalEvents();
-
     let proposalFilter = await daoContract.filters.ProposalVoteAdded();
     const proposals = await daoContract.queryFilter(proposalFilter);
     const totalStaked = await stakeContract.totalStaked();
