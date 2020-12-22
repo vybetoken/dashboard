@@ -47,7 +47,7 @@ async function getVybeContractAddresses() {
         explorer: "https://etherscan.io",
 		vybe: "0x3A1c1d1c06bE03cDDC4d3332F7C20e1B37c97CE9",
 		vybeABI: VYBE_ABI,
-		stake: "0x7A2cCBe1099960E7790b835D2fDEB1aE5EdfB143",
+		stake: "0x81e756Ef62b481333A93011705bb4f6AF1475AEF",
 		stakeABI: STAKE_ABI,
         dao: "0x9E6a97d3a65BFd1dDC6D15025f985eBc9c8f2b0A",
         daoABI: DAO_ABI,
@@ -58,15 +58,15 @@ async function getVybeContractAddresses() {
 
 	const GOERLI_TEST_NET = {
         explorer: "https://goerli.etherscan.io",
-		vybe: "0xbd380Ccf55E21Be87fb1f0341131884287C62dD7",
+		vybe: "0xf0Ffde3b5F1F7d68aA8f5165090DD677d2dbf2a1",
 		vybeABI: VYBE_ABI,
-		stake: "0xd51cC6430868d187Ec262aCB34789E9Bc535D2eD",
+		stake: "0xf7bC39173f1a144CC32101B23e732596158B6790",
 		stakeABI: STAKE_ABI,
-        dao: "0xdb56cD2359bb732a9189B8f3726C81B995BC6d01",
+        dao: "0x8124a69E52Ec706e01D10809a44943Fb53b033eb",
         daoABI: DAO_ABI,
-        uni: "0xE43D90ccA3a8C9986901830671Ae3C23aD776252",
+        uni: "0x373E802c78e1C97B118557CBA74021B9258952Fa",
         uniABI: UNI_ABI,
-        vybeLoan: "0x5caA95D3629Cccef846d67E5356fF1E1623bF069"
+        vybeLoan: "0x4611900B41C60169E60B81d40e3e65205E0db2f2"
 	}
 
 	const networkInfo = await provider.getNetwork();
