@@ -90,7 +90,7 @@ async function buildProposalRow(proposal) {
             <button type="button" class="btn btn-gradient-success btn-rounded mr-1" onclick="complete(${proposal.id})" id="complete-${proposal.id}">Complete</button>
         </div>`;
 
-    } else if (proposal.voters.includes(userAddress)) {
+    } else if (proposal.userVoted) {
         // show unvote button
         buttons = `
         <div class="btn-group" role="group" aria-label="Vote Buttons">

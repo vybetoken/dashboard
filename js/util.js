@@ -80,3 +80,11 @@ async function isValidURL(string) {
       '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
     return !!pattern.test(string);
 };
+
+async function stablizeString(str) {
+	return str.toString().toLowerCase();
+}
+
+async function compareETHAddresses(first, second) {
+	return await stablizeString(first) === await stablizeString(second);
+}
