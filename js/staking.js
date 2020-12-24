@@ -124,3 +124,17 @@ async function claimRewards() {
 		return false;
 	}
 }
+
+async function migrate() {
+	try {
+		await stakeContract.migrate(overrideGasLimit);
+		refreshStats();
+		successAlert("Staking Migrated!");
+		return true;
+
+	} catch (e) {
+		console.log(`error: `, e);
+		errorAlert("Failed to migrate!");
+		return false;
+	}
+}
