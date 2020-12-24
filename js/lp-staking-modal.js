@@ -14,12 +14,12 @@ function openStakeModal(deposit) {
 
     if (deposit) {
         depositModel = true;
-        document.getElementById("modal-title").innerHTML = "Deposit Vybe";
+        document.getElementById("modal-title").innerHTML = "Deposit UNI-V2";
         document.getElementById("modal-subtitle").innerHTML = "Enter the amount that you want to deposit into VybeStake";
         document.getElementById("modal-button").innerHTML = "Deposit";
     } else {
         depositModel = false;
-        document.getElementById("modal-title").innerHTML = "Withdraw Vybe";
+        document.getElementById("modal-title").innerHTML = "Withdraw UNI-V2";
         document.getElementById("modal-subtitle").innerHTML = "Enter the amount that you want to withdraw from VybeStake";
         document.getElementById("modal-button").innerHTML = "Withdraw";
     }
@@ -34,7 +34,7 @@ function closeStakeModal() {
 }
 
 async function updateStake() {
-	const vybeStakeBalance = await formatValue(await getStakedVYBE());
+	const uniStakeBalance = await formatValue(await getStakedUNI());
 	let stakeChange = document.getElementById("stake-number").value;
 
 	if (stakeChange == 0) {
@@ -43,7 +43,7 @@ async function updateStake() {
 
 	stakeChange = stakeChange.toString();
 
-	if ((displayWithdrawWarning) || (vybeStakeBalance == 0)) {
+	if ((displayWithdrawWarning) || (uniStakeBalance == 0)) {
 		if (depositModel) {
 			// increaseStake
 			increaseStake(stakeChange);

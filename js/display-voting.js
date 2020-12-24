@@ -91,7 +91,7 @@ async function buildProposalRow(proposal) {
         // </div>`;
         buttons = `Pending`;
 
-    } else if (proposal.voters.includes(userAddress)) {
+    } else if (proposal.userVoted) {
         // show unvote button
         buttons = `
         <div class="btn-group" role="group" aria-label="Vote Buttons">

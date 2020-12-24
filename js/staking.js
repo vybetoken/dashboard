@@ -38,6 +38,15 @@ async function getStakedVYBE() {
 	}
 }
 
+async function checkRewardAvailable() {
+	try {
+		return await stakeContract.rewardAvailable(userAddress);
+	} catch (err) {
+		console.log(`Failed to determine rewards available`);
+		return false;
+	}
+}
+
 async function getCurrentRewardsAmount() {
 	try {
 		const rewards = await stakeContract.calculateRewards(userAddress);
@@ -60,11 +69,11 @@ async function increaseStake(amount) {
 		if (
 			(ethers.BigNumber.from(amount)).gt(
 				ethers.BigNumber.from(
-					await vybeContract.allowance(userAddress, contractData.stake)
+					await vybeContract.allowance(userAddress, stakeContract.address)
 				)
 			)
 		) {
-			await vybeContract.approve(contractData.stake, UINT256_MAX);
+			await vybeContract.approve(stakeContract.address, UINT256_MAX);
 		}
 
 		await stakeContract.increaseStake(amount, overrideGasLimit);
@@ -73,6 +82,7 @@ async function increaseStake(amount) {
 
 	} catch (err) {
 		console.log(err);
+		errorAlert("Stake increase failed!");
 		return false
 	}
 }
@@ -90,11 +100,18 @@ async function decreaseStake(amount) {
 
 	} catch (err) {
 		console.log(err);
+		errorAlert("Stake decrease failed!");
 		return false
 	}
 }
 
 async function claimRewards() {
+	if (await checkRewardAvailable() === false) {
+		// save user gas
+		errorAlert("Rewards aren't available!");
+		return;
+	}
+
 	try {
 		await stakeContract.claimRewards(overrideGasLimit);
 		refreshStats();
@@ -103,6 +120,21 @@ async function claimRewards() {
 
 	} catch (e) {
 		console.log(`error: `, e);
+		errorAlert("Rewards claim failed!");
+		return false;
+	}
+}
+
+async function migrate() {
+	try {
+		await stakeContract.migrate(overrideGasLimit);
+		refreshStats();
+		successAlert("Staking Migrated!");
+		return true;
+
+	} catch (e) {
+		console.log(`error: `, e);
+		errorAlert("Failed to migrate!");
 		return false;
 	}
 }

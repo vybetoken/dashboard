@@ -16,7 +16,7 @@ async function proposalsCount() {
 
 async function getDAOBalance() {
     try {
-        const balance = await vybeContract.balanceOf(contractData.dao);
+        const balance = await vybeContract.balanceOf(daoContract.address);
         return ethers.utils.formatUnits(balance, 18);
     } catch (err) {
         console.log(`Failed to determine DAO balance`);
@@ -26,7 +26,7 @@ async function getDAOBalance() {
 
 async function getNewProposalEvents() {
     let params = {
-        address: contractData.dao,
+        address: daoContract.address,
         fromBlock: lastBlock,
         toBlock: 'latest',
         topics: [ ]
@@ -85,13 +85,13 @@ async function proposeFund(amount, info) {
     try {
         if (!(ethers.BigNumber.from(UINT256_MAX)).eq(
                 ethers.BigNumber.from(
-                    await vybeContract.allowance(userAddress, contractData.dao)
+                    await vybeContract.allowance(userAddress, daoContract.address)
                 )
             )
         ) {
-            await vybeContract.approve(contractData.dao, UINT256_MAX);
+            await vybeContract.approve(daoContract.address, UINT256_MAX);
         }
-        // Propose
+        // submit fund proposal
         await daoContract.proposeFund(userAddress, amount, info, overrideGasLimit);
 
     } catch (err) {
@@ -102,24 +102,37 @@ async function proposeFund(amount, info) {
 }
 
 async function getActiveProposals() {
-    // let proposals = await getNewProposalEvents();
-
-    let proposalFilter = await daoContract.filters.ProposalVoteAdded();
+    let proposalFilter = await daoContract.filters.NewProposal();
     const proposals = await daoContract.queryFilter(proposalFilter);
     const totalStaked = await stakeContract.totalStaked();
-
+    let filteredProposals = [];
     let newProposals = [];
 
+    // filter out completed proposals
     for (let proposal of proposals) {
         const pid = parseInt(proposal.topics[1]);
         const blockCreated = parseInt(proposal.blockNumber);
-        newProposals[pid] = {
-            id: pid,
-            blockCreated
-        };
-        newProposals[pid].meta = await daoContract.proposals(pid);
+        const meta = await daoContract.proposals(pid);
 
-        let threshold = await stakeContract.totalStaked();
+        if (!meta.completed) {
+            filteredProposals[pid] = {
+                id: pid,
+                blockCreated,
+                meta
+            };
+        }
+    }
+
+    for (let proposal of filteredProposals) {
+        // filter out malformed proposals
+        if (!proposal || !('id' in proposal)) {
+            continue;
+        }
+
+        const pid = proposal.id;
+        newProposals[pid] = proposal;
+
+        let threshold = totalStaked;
         let info;
         // The names of these mappings should've had their _ removed when they were made public.
         switch (newProposals[pid].meta.pType) {
@@ -214,6 +227,11 @@ async function getActiveProposals() {
             newProposals[pid].votes = newProposals[pid].votes.add(ethers.BigNumber.from(
                 await stakeContract.staked(voter))
             );
+
+            // check if current user has voted
+            if (await compareETHAddresses(voter, userAddress)) {
+                newProposals[pid].userVoted = true;
+            }
         }
 
         newProposals[pid].completable = newProposals[pid].votes.gt(threshold);

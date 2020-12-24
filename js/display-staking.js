@@ -45,16 +45,15 @@ async function displayVybeStakeBalance() {
 
 // USER REWARDS BALANCE
 async function displayVybeRewardsBalance() {
-	// const vybeRewardsBalance = await getCurrentRewardsAmount();
-    // vybeRewardsBalanceElement.innerHTML = await formatValue(vybeRewardsBalance);
-	vybeRewardsBalanceElement.innerHTML = `Paused`;
+	const vybeRewardsBalance = await getCurrentRewardsAmount();
+	vybeRewardsBalanceElement.innerHTML = await formatValue(vybeRewardsBalance);
 
-    // if (vybeUSD && vybeETH) {
-    //     const usdRewardsBalance = await formatUSD(vybeRewardsBalance * vybeUSD);
-    //     const ethRewardsBalance = await formatValue(vybeRewardsBalance * vybeETH);
-    //     usdRewardsBalanceElement.innerHTML = `${ usdRewardsBalance } USD`;
-    //     ethRewardsBalanceElement.innerHTML = `${ ethRewardsBalance } ETH`;
-    // }
+    if (vybeUSD && vybeETH) {
+        const usdRewardsBalance = await formatUSD(vybeRewardsBalance * vybeUSD);
+        const ethRewardsBalance = await formatValue(vybeRewardsBalance * vybeETH);
+        usdRewardsBalanceElement.innerHTML = `${ usdRewardsBalance } USD`;
+        ethRewardsBalanceElement.innerHTML = `${ ethRewardsBalance } ETH`;
+    }
 }
 
 // NETWORK STATS
