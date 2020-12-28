@@ -106,7 +106,8 @@ async function decreaseStake(amount) {
 }
 
 async function claimRewards() {
-	if (await checkRewardAvailable() === false) {
+	let rewards = await stakeContract.calculateRewards(userAddress);
+	if (rewards.isZero() === true) {
 		// save user gas
 		errorAlert("Rewards aren't available!");
 		return;
