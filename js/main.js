@@ -58,8 +58,8 @@ async function init() {
 	daoContract = new ethers.Contract(await stakeContract.owner(), contractData.daoABI, signer);
 	lastBlock = await provider.getBlockNumber() || 0;
 
-	// attempt to load staking
-	refreshStats();
+	// check migrate before stats
+	migrate20();
 
 	// load dao if on voting page
 	if (typeof displayNetworkProposalCount === "function") {
@@ -68,10 +68,13 @@ async function init() {
 		// proposal count
 		await displayNetworkProposalCount();
 	}
+
+	if (typeof displayUserUNIBalance === "function") {
+		// refresh stats on changes
+		setInterval(refreshStats, 5000);
+		setInterval(getVYBEPriceData, 60 * 1000);
+	}
 }
 
 // initialize
 init();
-// refresh stats on changes
-setInterval(refreshStats, 5000);
-setInterval(getVYBEPriceData, 60 * 1000);

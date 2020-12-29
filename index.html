@@ -98,10 +98,11 @@ SOFTWARE.
                                     <h2 id="user-balance-vybe" class="mb-5">0.00</h2>
                                     <h6 id="user-balance-usd" class="card-text"></h6>
                                     <h6 id="user-balance-eth" class="card-text"></h6>
-                                    <button type="button" class="btn btn-gradient-light btn-rounded btn-fw btn-mobile" onclick="openStakeModal(true)">Stake</button>
+                                    <div id="mobile-stake-button"></div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-4 stretch-card grid-margin">
                             <div class="card bg-gradient-info card-img-holder text-white">
                                 <div class="card-body">
@@ -110,7 +111,7 @@ SOFTWARE.
                                     <h2 id="stake-balance-vybe" class="mb-5">0.00</h2>
                                     <h6 id="stake-balance-usd" class="card-text"></h6>
                                     <h6 id="stake-balance-eth" class="card-text"></h6>
-                                    <button type="button" class="btn btn-gradient-light btn-rounded btn-fw btn-mobile" onclick="openStakeModal(false)">Withdraw</button>
+                                    <div id="mobile-stake-withdraw-button"></div>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +123,9 @@ SOFTWARE.
                                     <h2 id="vybe-rewards-balance" class="mb-5">-</h2>
                                     <h6 id="vybe-rewards-balance-usd" class="card-text"></h6>
                                     <h6 id="vybe-rewards-balance-eth" class="card-text"></h6>
-                                    <button type="button" class="btn btn-gradient-light btn-rounded btn-fw btn-mobile" onclick="claimRewards()">Claim</button>
+                                    <div id="claim-button-mobile">
+                                        <button type="button" class="btn btn-gradient-light btn-rounded btn-fw btn-mobile" onclick="claimRewards()">Claim</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -138,29 +141,13 @@ SOFTWARE.
                             </div>
                         </div>
 
-                        <div class="col-md-4 grid-margin stretch-card action-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Withdraw Vybe Stake</h4>
-                                    <button type="button" class="btn btn-gradient-primary btn-rounded btn-fw" onclick="openStakeModal(false)">Withdraw</button>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="col-md-4 grid-margin stretch-card action-card" id="migrate-20"></div>
 
-                        <div class="col-md-4 grid-margin stretch-card action-card">
+                        <div class="col-md-4 grid-margin stretch-card action-card" id="claim-button">
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title">Claim Vybe Rewards</h4>
                                     <button type="button" class="btn btn-gradient-success btn-rounded btn-fw" onclick="claimRewards()">Claim</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4 grid-margin stretch-card action-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">Migrate to Staking 2.0</h4>
-                                    <button type="button" class="btn btn-gradient-primary btn-rounded btn-fw" onclick="migrate()">Migrate</button>
                                 </div>
                             </div>
                         </div>
