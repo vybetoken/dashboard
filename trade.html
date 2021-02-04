@@ -35,7 +35,6 @@ SOFTWARE.
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/modal.css">
     <link rel="stylesheet" href="css/mobile.css">
-    <link rel="stylesheet" href="css/three-dots.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link data-n-head="ssr" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;700;900&display=swap">
     <link rel="shortcut icon" href="https://vybe.finance/favicon.ico" />
@@ -55,14 +54,13 @@ SOFTWARE.
             <div class="navbar-menu-wrapper d-flex align-items-stretch">
                 <ul class="navbar-nav navbar-nav-right">
                     <li class="nav-item">
-                        <div class="nav-profile-text">
-                            <p class="mb-1 text-black" id="vybe-proposal-count"></p>
-                        </div>
+                        <div><p class="mb-1 text-black" id="uni-network-stake"></p></div>
                     </li>
                 </ul>
             </div>
         </nav>
         <div class="container-fluid page-body-wrapper">
+            <!-- partial:partials/_sidebar.html -->
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
                     <li class="nav-item">
@@ -95,35 +93,10 @@ SOFTWARE.
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="page-header">
-                        <h3 class="page-title"> Proposals </h3>
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li><button type="button" class="btn btn-gradient-info btn-rounded" onclick="openVotingModal()">Create</button></li>
-                            </ol>
-                        </nav>
+                        <h3 class="page-title"> Trading </h3>
                     </div>
                     <div class="row">
-                        <div class="col-lg-12 grid-margin stretch-card">
-                            <div class="card" style="overflow-x:auto;">
-                                <div class="card-body">
-                                    <div class="dot-collision" style="margin: 0 auto; display: block;" id="proposals-loading"></div>
-                                    <div style="margin: 0 auto; display: none;" id="proposals-empty">No Active Proposals</div>
-                                    <table class="table table-hover" style="display: none;" id="proposals-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Address</th>
-                                                <th>Type</th>
-                                                <th>Info</th>
-                                                <th>Amount</th>
-                                                <th>Votes</th>
-                                                <th>Vote</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="proposals-table-body"></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                        <iframe id='iframe-widget' src='https://changenow.io/embeds/exchange-widget/v2/widget.html?amount=0.1&from=eth&link_id=c9d237d5406c99&to=vybe&FAQ=false&logo=true&locales=true&lang=' width='100%' height='350px' frameborder='0'></iframe>
                     </div>
                 </div>
                 <footer class="footer">
@@ -134,40 +107,7 @@ SOFTWARE.
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="https://cdn.ethers.io/lib/ethers-5.0.umd.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://unpkg.com/tippy.js@6"></script>
-    <script src="js/currency.min.js"></script>
-    <script src="js/voting-modal.js"></script>
-    <script src="js/networking.js"></script>
-    <script src="js/util.js"></script>
-    <script src="js/voting.js"></script>
-    <script src="js/display-voting.js"></script>
-    <script src="js/main.js"></script>
-
-    <!-- The Modal -->
-    <div id="votingModal">
-        <!-- Modal content -->
-        <div id="votingModalContent">
-            <span id="closeVotingModal" onclick="closeVotingModal()">&times;</span>
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title mb-4" id="modal-title">Create Proposal</h4>
-                    <div class="form-group">
-                        <label for="proposalAmount">Amount</label>
-                        <input id="proposal-amount" type="number" class="form-control" aria-label="Change amount" onkeyup="onlyNumbers(this)" placeholder="Proposal Amount">
-                    </div>
-                    <div class="form-group">
-                        <label for="proposalInfo">Info Link</label>
-                        <input type="text" class="form-control" id="proposalInfo" placeholder="https://github.com">
-                    </div>
-                    <button type="button" id="model-button" class="btn btn-gradient-primary btn-rounded btn-fw" onclick="createDisplayProposal()">Create</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <script type='text/javascript' src='https://changenow.io/embeds/exchange-widget/v2/stepper-connector.js'></script>
 </body>
 
 </html>
