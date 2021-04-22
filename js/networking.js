@@ -23,8 +23,10 @@ function api(method, url, data) {
 async function getVYBEPriceData() {
     api('get', 'https://api.vybe.finance/api/data')
         .then((data) => {
-            vybeUSD = new web3.BigNumber(data.usd);
-            vybeETH = new web3.BigNumber(data.eth);
+            // vybeUSD = ethers.BigNumber.from(data.usd);
+            // vybeETH = ethers.BigNumber.from(data.eth);
+            vybeUSD = data.usd;
+            vybeETH = data.eth;
             if (typeof displayUserBalance === "function") {
                 displayUserBalance();
                 displayVybeStakeBalance();

@@ -11,7 +11,7 @@ let daoContract;
 let lastBlock;
 let activeProposals;
 let isStaking = true;
-const overrideGasLimit = { gasLimit: 300000 };
+const overrideGasLimit = { gasLimit: 240000 };
 const UINT256_MAX = "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
 
 async function refreshStats() {
@@ -58,22 +58,24 @@ async function init() {
 	daoContract = new ethers.Contract(await stakeContract.owner(), contractData.daoABI, signer);
 	lastBlock = await provider.getBlockNumber() || 0;
 
-	// check migrate before stats
-	migrate20();
-
 	// load dao if on voting page
 	if (typeof displayNetworkProposalCount === "function") {
 		// load proposals
 		await displayProposals();
 		// proposal count
 		await displayNetworkProposalCount();
+		return;
 	}
 
 	if (typeof displayUserUNIBalance === "function") {
 		// refresh stats on changes
 		setInterval(refreshStats, 5000);
 		setInterval(getVYBEPriceData, 60 * 1000);
+		return;
 	}
+	
+	// check migrate before stats
+	migrate20();
 }
 
 // initialize
